@@ -1,0 +1,82 @@
+---
+header-includes:
+  - \usepackage{fancyhdr}
+  - \usepackage{menukeys}
+  - \usepackage{enumitem}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \chead{Übungsblatt 7 - Bivariate Deskriptivstatistik II}
+  - \rhead{\thepage}
+
+output:
+  pdf_document
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center", 
+               comment = NA, strip.white = TRUE, 
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+## Vorbereitung
+
+Bitte führen Sie zur Vorbereitung folgende Schritte aus:
+
+1.  Starten Sie RStudio.
+2.  Löschen Sie den Workspace. 
+3.  Setzen Sie das Arbeitsverzeichnis, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Öffnen Sie ein R-Skript und laden Sie den Datensatz `erstis_neu`.
+4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
+
+## Aufgabe 1 
+
+Erstellen Sie ein gruppiertes Säulendiagramm, um die Häufigkeit von befragten Personen mit und ohne Kindern (`kinder`) für die Personen mit und ohne Nebenjob (`job`) zu vergleichen.
+
+(i) Ändern Sie die Farbgebung, sodass die gruppierten Säulen gut unterscheidbar sind. Fügen Sie eine Legende hinzu, sodass die Farbkodierung nachvollziehbar ist.
+(ii) Ergänzen Sie einen Titel für Ihre Grafik und eine Beschriftung der x-Achse und der y-Achse.
+(iii) Erweitern Sie die Höhe der Grafik, so dass Platz für die Legende ist.
+(iv) Speichern Sie das Balkendiagramm in Ihrem Ordner.
+(v) Erstellen Sie eine Häufigkeitstabelle mit Randsummen. Wie viele Fälle aus dem Datensatz `erstis_neu` wurden ausgeschlossen?
+<!--
+(vi) Welches Skalenniveau haben die beiden Variablen? Berechnen und interpretieren Sie ein passendes Zusammenhangsmaß.
+-->
+
+## Aufgabe 2
+
+Welche der folgenden Eigenschaften treffen auf den Korrelationskoeffizienten nach Pearson zu?
+
+- [ ] Bei einer Korrelation von 1 kann man von einer kausalen Beziehung sprechen.
+- [ ] Für die Berechnung müssen beide Variablen intervallskaliert sein.
+- [ ] Der Korrelationskoeffizient ist invariant gegenüber linearen Transformationen.
+- [ ] Wenn eine Variable mit sich selbst korreliert wird, ergibt der Korrelationskoeffizient 0. 
+- [ ] Der Korrelationskoeffizient nimmt Werte zwischen $-\infty$ und $\infty$.
+
+## Aufgabe 3 
+
+Überprüfen Sie, ob es einen Zusammenhang zwischen zufriedener Stimmung(`stim1`) und munterer Stimmung `stim10` gibt. Welches Skalenniveau haben die beiden Variablen?
+Erstellen Sie dafür zunächst eine Häufigkeitstabelle und dann ein geeignetes Zusammenhangsmaß.
+
+## Aufgabe 4
+
+Sie möchten sich das Alter(`alter`) abhängig vom früheren Wohnort (`wohnort.alt`) anschauen.
+
+(i) Visualisieren Sie dies in einem Boxplot-Diagramm. Fügen Sie dem Diagramm einen Titel hinzu und benennen Sie die Achsen adäquat.
+(ii) Lassen Sie sich die Deskriptivstatistik vom Alter abhängig vom früheren Wohnort ausgeben. Lesen Sie aus der Ausgabe ab, wie groß der Mittelwert und die Standardabweichung für Personen aus Berlin und aus dem Ausland sind. Finden Sie die entsprechenden Mittelwerte auch dargestellt im oberen Boxplot?
+
+
+
+
+
+
+
+
+
+
+
+
+

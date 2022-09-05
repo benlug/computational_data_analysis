@@ -1,0 +1,170 @@
+---
+header-includes:
+  - \usepackage{fancyhdr}
+  - \usepackage{menukeys}
+  - \usepackage{enumitem}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \chead{Musterlösung 7 - Bivariate Deskriptivstatistik II}
+  - \rhead{\thepage}
+
+output:
+  pdf_document
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center", 
+               comment = NA, strip.white = TRUE, 
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+## Vorbereitung
+
+Bitte führen Sie zur Vorbereitung folgende Schritte aus:
+
+1.  Starten Sie RStudio.
+2.  Löschen Sie den Workspace. 
+3.  Setzen Sie das Arbeitsverzeichnis, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Öffnen Sie ein R-Skript und laden Sie den Datensatz `erstis_neu`.
+4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
+
+```{r echo=F}
+setwd("C:/Users/Ben/OneDrive/PhD/teaching/R-Übung/Musterlösungen")  # set wd in source file location
+load("../Datensätze/erstis_neu.RData")
+```
+
+## Aufgabe 1 
+
+Erstellen Sie ein gruppiertes Säulendiagramm, um die Häufigkeit von befragten Personen mit und ohne Kindern (`kinder`) für die Personen mit und ohne Nebenjob (`job`) zu vergleichen.
+
+(i) Ändern Sie die Farbgebung, sodass die gruppierten Säulen gut unterscheidbar sind. Fügen Sie eine Legende hinzu, sodass die Farbkodierung nachvollziehbar ist.
+(ii) Ergänzen Sie einen Titel für Ihre Grafik und eine Beschriftung der x-Achse und der y-Achse.
+(iii) Erweitern Sie die Höhe der Grafik, so dass Platz für die Legende ist.
+(iv) Speichern Sie das Balkendiagramm in Ihrem Ordner.
+
+**Lösung**
+
+```{r fig1, fig.height = 4.5, fig.width = 4.5, fig.align = "center"}
+mytab <- table(erstis$kinder, erstis$job)
+barplot(mytab, beside = TRUE, 
+        col = c("deepskyblue", "hotpink"), 
+        legend = TRUE, 
+        ylim = c(0, 100), 
+        main = "Kinder im Haushalt", ylab = "Abs. Häufigkeit", xlab = "Nebenjob haben")
+```
+- Führen Sie die Grafik einmal mit und einmal ohne das `ylim`-Argument aus. Ohne das Argument überlappen die erstellte Legende und die pinke Säule. Um dem entgegenzuwirken, erweitern wir das angezeigte Intervall auf der y-Achse mit `ylim`.
+
+(v) Erstellen Sie eine Häufigkeitstabelle mit Randsummen. Wie viele Fälle aus dem Datensatz `erstis_neu` wurden ausgeschlossen?
+
+**Lösung**
+
+```{r}
+addmargins(mytab)
+```
+Insgesamt beinhaltet die Tabelle 173 Fälle, d.h. 18 Personen aus dem Datensatz `erstis_neu` wurden aufgrund fehlender Werte ausgeschlossen. 
+<!--
+(vi) Welches Skalenniveau haben die beiden Variablen? Berechnen und interpretieren Sie ein passendes Zusammenhangsmaß.
+
+**Lösung**
+
+```{r}
+library(vcd)
+assocstats(mytab)
+```
+
+Es handelt sich um zwei nominalskalierte kategoriale dichotome Merkmale. 
+Es gibt kaum einen Zusammenhang (Cramér's $V$ = $\varphi$ = 0.07).
+
+
+**Lösung 2**
+
+Wir können auch Yule's $Q$ und/oder das Odd's Ratio bestimmen.
+
+```{r}
+library(psych)
+Yule(mytab)
+```
+Ein Wert von Yule's $Q$ = -0.19 deutet auf einen sehr geringen gegenläufigen Zusammenhang hin. 
+
+```{r}
+library(DescTools)
+OddsRatio(mytab)
+```
+
+Die Chance, Kinder im Haushalt zu haben, ist bei Personen, die einen Nebenjob haben 0,69 mal so hoch wie bei Personen, die keinen Nebenjob haben. 
+-->
+
+## Aufgabe 2
+
+Welche der folgenden Eigenschaften treffen auf den Korrelationskoeffizienten nach Pearson zu?
+
+- [ ] Bei einer Korrelation von 1 kann man von einer kausalen Beziehung sprechen.  
+*Falsch. Man kann von Korrelation nicht sofort auf Kausalität schließen. Korrelationen können auch nicht-kausale Zusammenhänge charakterisieren.*
+- [x] Für die Berechnung müssen beide Variablen intervallskaliert sein.  
+*Richtig. Beide Variablen müssen mindestens intervallskaliert sein (= metrisch)*
+- [x] Der Korrelationskoeffizient ist invariant gegenüber linearen Transformationen.
+- [ ] Wenn eine Variable mit sich selbst korreliert wird, ergibt der Korrelationskoeffizient 0.  
+*Falsch. Er ergibt 1.*
+- [ ] Der Korrelationskoeffizient nimmt Werte zwischen $-\infty$ und $\infty$.  
+*Falsch. Das gilt für die Kovarianz. Der Korrelationskoeffizient kann nur Werte zwischen -1 und 1 annehmen.*
+
+
+## Aufgabe 3 
+
+Überprüfen Sie, ob es einen Zusammenhang zwischen zufriedener Stimmung(`stim1`) und munterer Stimmung `stim10` gibt. Welches Skalenniveau haben die beiden Variablen?
+Erstellen Sie dafür zunächst eine Häufigkeitstabelle und dann ein geeignetes Zusammenhangsmaß.
+
+**Lösung**
+```{r}
+tabelle <- table(erstis$stim1, erstis$stim10)
+tabelle
+library(Hmisc)
+rcorr.cens(erstis$stim1, erstis$stim10, outx = TRUE)[2]
+```
+
+Es handelt sich um zwei kategoriale ordinalskalierte Variablen. Der $gamma$-Koeffizient beträgt 0.46. Es liegen also mehr konkordante Paare im Vergleich zu diskordanten Paare vor, was einen positiven Zusammenhang beschreibt. Personen, deren Stimmung eher zufrieden ist, sind tendenziell auch eher munter. 
+
+
+## Aufgabe 4
+
+Sie möchten sich das Alter (`alter`) abhängig vom früheren Wohnort (`wohnort.alt`) anschauen.
+(i) Visualisieren Sie dies in einem Boxplot-Diagramm. Fügen Sie dem Diagramm einen Titel hinzu und benennen Sie die Achsen adäquat.
+
+**Lösung**
+```{r fig2, fig.height = 4.5, fig.width = 4.5, fig.align = "center"}
+boxplot(alter ~ wohnort.alt, data = erstis,
+        main = "Alter nach Wohnort",
+        ylab = "Alter",
+        xlab = "früherer Wohnort")
+```
+
+(ii) Lassen Sie sich die Deskriptivstatistik vom Alter abhängig vom früheren Wohnort ausgeben. Lesen Sie aus der Ausgabe ab, wie groß der Mittelwert und die Standardabweichung für Personen aus Berlin und aus dem Ausland sind. Finden Sie die entsprechenden Mittelwerte auch dargestellt im oberen Boxplot?
+
+
+```{r}
+library(DescTools)
+describeBy(erstis$alter, erstis$wohnort.alt)
+```
+
+Der Mittelwert für Personen mit früherem Wohnort Berlin beträgt 27.33 (SD = 7.05).  Der Mittelwert für Personen mit früherem Wohnort im Ausland beträgt 22.61 (SD = 4.31). 
+Die Mittelwerte sind nicht im Boxplot dargestellt, stattdessen finden wir die Mediane.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

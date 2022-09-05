@@ -1,0 +1,10 @@
+---
+author: 
+  email: benedikt.lugauer@uni-leipzig.de
+  name: Benedikt Lugauer
+header-includes:
+  - \fancyfoot[CO]{B. Lugauer, J. Holtmann | R-Übung Statistik I | WS 22/23}
+toc-title: "Inhaltsverzeichnis"
+urlcolor: blue
+linkcolor: magenta
+---

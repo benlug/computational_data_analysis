@@ -1,0 +1,143 @@
+---
+output:
+  bookdown::pdf_document2:
+    pandoc_args: '_common/header.yaml'
+    includes:
+      in_header: 
+        - _tex/preamble.tex
+header-includes:
+  - \chead{Fragenkatalog}
+toc: false
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center",
+               comment = NA, strip.white = TRUE,
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+# Regression
+
+**Wie erstellt man eine Regressionsgleichung in R? Gibt es verschiedene Wege?**
+
+Eine Regressionsgleichung:
+
+$$\hat{y}_m = b_0 + b_1x_m$$
+- beachte den Unterschied zwischen Regressionsgleichung und Regressionsmodell (Modellgleichung)!
+
+Regressionsmodell:
+
+$$\hat{y}_m = b_0 + b_1x_m + e_m$$
+
+In R:
+
+```{r eval=FALSE}
+lm(y_m ~ x_m)
+```
+
+Generell:
+
+```{r eval=FALSE}
+formel <- formula(y_m ~ x_m)
+lm(formel)
+```
+
+**In welcher Reihenfolge müssen die unabhängigen bzw. abhängigen Variablen R bei der Partialkorrelation übergeben werden?**
+
+Für die Berechnung der Partialkorrelationen spielt die Reihenfolge keine Rolle. Sie übergeben `pcor` einen Data Frame mit den entsprechenden Variablen. Es wird im Kontext von Korrelationen auch nicht von unabhängigen und abhängigen Variablen gesprochen. Bei Korrelationen geht man nicht von einem gerichteten Zusammenhang aus.
+
+```{r echo=FALSE}
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))  # set wd in source file location
+load("dat/erstis_neu.RData") 
+sub <- na.omit(erstis[, c("lz.1", "gs.1", "wm.1")])
+```
+
+Partialkorrelation:
+```{r}
+library(ppcor)
+pcor(sub[, c("lz.1", "gs.1", "wm.1")])$estimate
+pcor(sub[, c("gs.1", "wm.1", "lz.1")])$estimate
+# ?spcor
+```
+- Output abhängig von der Reihenfolge der Spalten
+
+# Wahrscheinlichkeitstheorie
+
+**Warum benutzt man das `lower.tail` Argument? Was sagt dieses Argument in seinen beiden Varianten `TRUE` und `FALSE` genau aus und wofür werden beide Versionen des `lower.tail` Arguments verwendet?**
+
+```{r echo=FALSE}
+library(tidyverse)
+x <- seq(from = 120, to = 220, by = 0.1)
+y <- dnorm(x, 170, 12)
+d <- data.frame(x, y)
+ggplot(d, aes(x = x, y = y)) +
+  geom_line() +
+  geom_point(size = 0.5) +
+  geom_ribbon(fill = "steelblue", aes(ymax = y), ymin = 0, alpha = 0.5, data = subset(d, x >= 167)) +
+  geom_ribbon(fill = "red", aes(ymax = y), ymin = 0, alpha = 0.5, data = subset(d, x <= 167)) +
+  xlab("x") +
+  annotate("text", x = 200, y = 0.02, label = "Blaue Fläche: lower.tail = FALSE", size = 2) +
+  annotate("text", x = 140, y = 0.02, label = "Rote Fläche: lower.tail = TRUE", size = 2) +
+  theme_bw()
+```
+
+```{r}
+pnorm(q = 167, mean = 170, sd = 12, lower.tail = TRUE)  # das ist der Default
+pnorm(q = 167, mean = 170, sd = 12, lower.tail = FALSE)
+```
+- `lower.tail = TRUE` = $P(X \leq x)$
+- `lower.tail = FALSE` = $P(X > x)$
+
+**Können `dbinom` und `dnorm` synonymartig verwendet werden? Beziehungsweise, was ist der Unterschied zwischen den beiden Funktionen? (und auch `pbinom`, `rbinom`, `pnorm`, `rnorm`)**
+
+`dbinom` und `dnorm` können nicht synonym verwendet werden. Die zugrundeliegen Verteilungen sind respektive die Binomialverteilung und die Normalverteilung, die sich fundamental unterscheiden (siehe Vorlesungsfolien).
+
+```{r echo=FALSE}
+x <- seq(from = -1, to = 5, by = 0.1)
+y <- dnorm(x, mean = 2, sd = 1)
+
+par(mfrow = c(1, 2))
+
+plot(x, y, type = "line")
+
+y <- dbinom(x = -1:5, size = 2, prob = .5)
+plot(-1:5, y)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

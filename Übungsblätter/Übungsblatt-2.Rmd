@@ -1,0 +1,94 @@
+---
+header-includes:
+  - \usepackage{fancyhdr}
+  - \usepackage{menukeys}
+  - \usepackage{enumitem}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \chead{Übungsblatt 2 - Datenimport}
+  - \rhead{\thepage}
+
+output:
+  pdf_document
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center", 
+               comment = NA, strip.white = TRUE, 
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+## Vorbereitung
+
+Bitte führen Sie zur Vorbereitung folgende Schritte aus:
+
+1.  Starten Sie RStudio.
+2.  Löschen Sie den Workspace. 
+3.  Setzen Sie das Arbeitsverzeichnis, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Öffnen Sie ein R-Skript.
+4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
+
+## Aufgabe 1 - Öffnen von Datenformaten in R
+
+Achten Sie auf die Benutzung des richtigen Befehls und der richtigen Argumente!
+
+(i) Rufen Sie die Hilfeseite zur Funktion `read.csv()` auf und überfliegen Sie die **Details** Sektion (es wird nicht von Ihnen verlangt, dass Sie die Inhalte vollständig verstehen).   
+Gibt es einen Unterschied zwischen der `read.csv()`- und `read.table()`-Funktion? Wenn ja, was unterscheidet diese Funktionen?
+
+(ii) Laden Sie mit R die Datei `test.csv` (Moodle) und speichern Sie den Inhalt in einem Objekt `testdaten`.
+
+(iii) Lassen Sie sich den Inhalt des Datensatzes angeben. 
+
+## Aufgabe 2 - Installieren und Laden eines Pakets
+
+(i) Prüfen Sie, ob das Paket `psych` bereits installiert ist. Wenn nicht, installieren Sie es bitte, indem Sie den notwendigen Befehl verwenden. Falls das Paket schon installiert ist,
+aktualisieren Sie es, sodass Sie die neuste Version haben.
+
+(ii) Aktivieren Sie das Paket in R
+
+**Übrigens**: Für manche Pakete gibt es auch ausführliche Hilfeseiten!
+```{r eval=F}
+?psych
+```
+
+## Aufgabe 3 - Speichern von Objekten
+
+(i) Speichern Sie den Datensatz `testdaten` in einem anderen Format als dem ursprünglichen csv-Format.
+
+## Zusatzaufgabe: Eigene Funktionen in R (für Fortgeschrittene)
+
+*(Diese Aufgabe ist optional und nicht prüfungsrelevant)*
+
+Sie können in R auch eigene Funktionen schreiben (Funktionen wie beispielweise `summary()`). 
+
+Erinnern wir uns an die Berechnung des BMI zurück (Übungsblatt 1). Hier haben wir Daten zu Gewicht und Größe für drei Personen. Für die Berechnung des BMI kann man auch eine eigene Funktion schreiben:
+
+```{r eval=FALSE}
+bmi <- function(groesse, gewicht) {
+  bodymassindex <- gewicht / groesse^2
+  return(bodymassindex)
+}
+```
+
+Die erste Zeile der Funktion legt dabei fest, dass es um eine Funktion namens `bmi` geht, und dass dieser Funktion zwei Werte als Argumente übergeben werden, welche `gewicht` und `groesse` heißen. Die zweite Zeile besagt, dass mit diesen Werten der Wert `bodymassindex` berechnet werden soll. In der dritten Zeile steht, dass `bodymassindex` als Ergebnis ausgegeben werden soll. Die Klammern `{}` umschließen den Inhalt der Funktion. Nach dem Ausführen des Codes für die Funktion `bmi`, kann der BMI für beliebige Zahlen errechnet werden.
+
+```{r eval=FALSE}
+bmi(1.90, 80)
+```
+
+Schreiben Sie eine Funktion, der eine Zahl übergeben wird und diese mit 3 multipliziert. Nutzen Sie dafür das Codegerüst: (füllen Sie die Lücken)
+
+```{r eval=FALSE}
+mal3 <- function( ) {     
+  x <- 
+  return( )
+}
+```
+
+
+

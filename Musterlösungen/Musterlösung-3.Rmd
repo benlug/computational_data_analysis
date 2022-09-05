@@ -1,0 +1,219 @@
+---
+header-includes:
+  - \usepackage{fancyhdr}
+  - \usepackage{menukeys}
+  - \usepackage{enumitem}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \chead{Musterlösung 3 - Datenmanagement}
+  - \rhead{\thepage}
+
+output:
+  pdf_document
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center", 
+               comment = NA, strip.white = TRUE, 
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+## Vorbereitung
+
+Bitte führen Sie zur Vorbereitung folgende Schritte aus:
+
+1.  Starten Sie RStudio.
+2.  Löschen Sie den Workspace. 
+3.  Setzen Sie das Arbeitsverzeichnis, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Öffnen Sie ein R-Skript.
+4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
+
+## Aufgabe 1
+
+(i) Lesen Sie die Datei `ue_datensatz.txt` (siehe Moodle) mit Hilfe des `read.table()`-Befehls in R als Objekt `ue_daten3` ein. Achten Sie auf die Verwendung der richtigen Argumente.
+
+**Lösung**
+
+```{r echo=F}
+setwd("C:/Users/Ben/OneDrive/PhD/teaching/R-Übung/Musterlösungen")  # set wd in source file location
+```
+
+```{r}
+ue_daten3 <- read.table("../Datensätze/ue_datensatz.txt", # Dateiname
+                        header = TRUE,                    # Erste Zeile enthält Variablennamen 
+                        sep = ",",                        # Spalten durch Kommata getrennt
+                        na.strings = "-999",              # Kodierung fehlender Werte
+                        dec = ".")                        # default
+```
+
+(ii) Überprüfen Sie den Datensatz mithilfe von `summary()`. Finden Sie die zwei Eingabefehler im Datensatz und ersetzen Sie diese durch fehlende Werte (`NA`). Nutzen Sie das Kodierschema auf Moodle (im Datensätze-Ordner), um die Eingabefehler erkennen zu können.
+
+**Lösung**
+
+```{r eval=F}
+summary(ue_daten3)
+```
+
+Nach der Inspektion sollten Sie folgende Fehler entdeckt haben:
+
+* Wert -3 auf der Variable `bf19`
+* Wert 14 auf der Variable `uni4`
+
+```{r eval=F}
+ue_daten3[ue_daten3$bf19 == -3, "bf19"] <- NA
+ue_daten3[ue_daten3$uni4 == 14, "uni4"] <- NA
+```
+
+(iii) Lassen Sie sich die Anzahl der Personen und Variablen ausgeben. 
+
+**Lösung**
+
+```{r}
+nrow(ue_daten3)
+ncol(ue_daten3)
+
+# alternativ
+# str(ue_daten3)
+```
+
+(iv) Entfernen Sie alle Personen mit fehlenden Werten aus dem Datensatz. 
+
+**Lösung**
+
+```{r}
+ue_daten3 <- na.omit(ue_daten3)
+```
+
+(v) Nutzen Sie die Indexierung, um ein Objekt zu erstellen, das für alle Personen nur die ersten drei Stimmungsvariablen (`stim1`, `stim2`, `stim3`) enthält. 
+
+**Lösung**
+
+Viele Wege führen nach Rom:
+
+```{r}
+sub_stim <- ue_daten3[, c("stim1", "stim2", "stim3")]
+sub_stim <- ue_daten3[, c(1, 2, 3)]
+sub_stim <- ue_daten3[, 1:3]
+
+str(sub_stim)
+```
+
+(vi) Erstellen Sie eine neue Variable in dem neuen Objekt, die für jede Person den Mittelwert der ersten drei Stimmungsvariablen enthält. Lassen Sie sich den Mittelwert für die 55. Person im Datensatz ausgeben.
+
+**Lösung**
+
+```{r}
+sub_stim$stim_MW <- rowMeans(sub_stim[,c("stim1","stim2","stim3")])
+sub_stim$stim_MWa <- (sub_stim$stim1 +  sub_stim$stim2 + sub_stim$stim3)/3 # Alternatve Möglichkeit, gerade bei vielen Items aber nicht zu empfehlen.
+sub_stim[55,4]
+```
+
+## Aufgabe 2 - Faktoren
+
+(i) Laden Sie den `erstis.RData` Datensatz in R.
+
+(ii) Konvertieren Sie im Datensatz die Variablen `gruppe`, `job` und `wohnort.alt` in Faktoren. Verwenden Sie die folgenden Labels: 
+
++ `gruppe`: 1 = Kurs A, 2 = Kurs B, 3 = Kurs C, 4 = Kurs D
+
++ `job`: 1 = Nebenjob, 2 = Kein Nebenjob
+
++ `wohnort.alt`: 1 = alte BL, 2 = neue BL, 3 = Berlin, 4 = Ausland
+
+**Lösung**
+
+```{r}
+load("../Datensätze/erstis.RData")
+```
+
+
+```{r}
+erstis$gruppe <- factor(erstis$gruppe, levels = 1:4,
+                        labels = c("Kurs A", "Kurs B", "Kurs C", "Kurs D"))
+erstis$job <- factor(erstis$job, levels = c(1,2), 
+                     labels = c("Nebenjob", "Kein Nebenjob"))
+erstis$wohnort.alt <- factor(erstis$wohnort.alt, levels = 1:4, 
+                             labels = c("alte BL", "neue BL", "Berlin", "Ausland"))
+
+str(erstis[, c("gruppe", "job", "wohnort.alt")])
+```
+
+
+(iii) Schauen Sie sich die Variable `code` an. Welche Funktion hat diese Variable? Welches Variablenniveau sollte die Variable Ihrem Verständnis nach haben? Konvertieren Sie gegegebenfalls.
+
+**Lösung**
+
+```{r}
+str(erstis[, "code"])
+summary(erstis$code)
+```
+Die Variable `code` ist ursprünglich als integer (Zahlenvektor) eingelesen. Sie hat einen Wertebereich von 1 bis 191 und stellt den Probandencode dar. Da der jeweilige Zahlenwert, der einer Person zugeordnet wird, keine Bedeutung hat, könnte man die Variable auch als Faktor umkodieren.
+
+```{r}
+erstis[, "code"] <- factor(erstis[, "code"])
+```
+
+
+
+## Aufgabe 3 - Umkodieren
+
+Polen Sie die folgenden Stimmungsitems im Datensatz so um, dass bei allen Items ein höherer Wert einer stärker ausgeprägten ruhigen bzw. wachen Stimmung entspricht:
+
+`stim3`, `stim5`, `stim7`, `stim9`
+
+Bilden Sie die Namen der neuen Variablen, indem Sie an den alten Namen ein "_r"
+anhängen (Bsp.: `stim3_r`).
+
+**Lösung**
+
+```{r}
+library(car)
+
+erstis$stim3_r <- recode(erstis$stim3, recodes = "1=5; 2=4; 4=2; 5=1")
+erstis$stim5_r <- recode(erstis$stim5, recodes = "1=5; 2=4; 4=2; 5=1")
+erstis$stim7_r <- recode(erstis$stim7, recodes = "1=5; 2=4; 4=2; 5=1")
+erstis$stim9_r <- recode(erstis$stim9, recodes = "1=5; 2=4; 4=2; 5=1")
+```
+
+## Aufgabe 4 - Skalenbildung
+
+Bilden Sie eine neue Variable im Datensatz, die die Skalenmittelwerte für die Items der
+wachen Stimmung darstellt. Nennen Sie diese Variable `wm` (wach-müde) und mitteln Sie
+dazu alle Items der Skala. Zu dieser Skala gehören das zweite, fünfte, siebte und zehnte Stimmungsitem. Wählen Sie einen liberalen Umgang mit fehlenden Werten (Berechnung des Skalenwertes auch bei Personen mit fehlenden Werten).
+**Achtung**: Vergessen Sie nicht, die in Aufgabe 2 erstellten umgepolten Items zu verwenden!
+
+**Lösung**
+
+```{r}
+set_wm <- c("stim2", "stim5_r", "stim7_r", "stim10")
+erstis$wm <- rowMeans(erstis[, set_wm], na.rm = TRUE)
+summary(erstis$wm)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

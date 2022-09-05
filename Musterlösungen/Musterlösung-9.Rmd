@@ -1,0 +1,139 @@
+---
+header-includes:
+  - \usepackage{fancyhdr}
+  - \usepackage{menukeys}
+  - \usepackage{enumitem}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \chead{Musterlösung 9 - Multiple Regression}
+  - \rhead{\thepage}
+
+output:
+  pdf_document
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center", 
+               comment = NA, strip.white = TRUE, 
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+## Vorbereitung
+
+Bitte führen Sie zur Vorbereitung folgende Schritte aus:
+
+1.  Starten Sie RStudio.
+2.  Löschen Sie den Workspace. 
+3.  Setzen Sie das Arbeitsverzeichnis, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Öffnen Sie ein R-Skript.
+4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
+
+Für die folgenden Aufgaben nutzen wir einen neuen Datensatz `affect`, welcher sich im `psychTools` Paket befindet. Daher muss der Datensatz nicht wie gewöhnlich mit `load()` in das Environment geladen werden, sondern mit `data()`.
+
+```{r echo=FALSE}
+library(psychTools)
+data(affect)     # das dazugehörige Objekt heißt in R auch "affect"
+View(affect)
+```
+
+## Aufgabe 1
+
+Bilden Sie ein Datensatzobjekt, das nur die Variablen `EA2`, `ext`, `neur` enthält sowie nur Personen mit gültigen Werten auf diesen Variablen. Verwenden Sie diesen Datensatz für die folgenden Aufgaben.
+
+**Lösung**
+
+```{r}
+sub <- na.omit(affect[, c("EA2", "ext", "neur")])
+```
+
+- keine fehlenden Werte im Datensatz
+
+## Aufgabe 2
+
+i) Zentrieren Sie die Prädiktoren Extraversion und Neurotizismus.
+
+**Lösung**
+
+```{r}
+sub$ext_c <- scale(sub$ext, scale = FALSE)
+sub$neu_c <- scale(sub$neur, scale = FALSE)
+```
+
+Zur Kontrolle:
+```{r}
+summary(sub)
+```
+- `Means` für die zentrierten Prädiktoren sind 0
+
+ii) Bestimmen Sie die Regressionsgleichung zur Vorhersage von positiver Aktiviertheit durch Extraversion und Neurotizismus.
+
+**Lösung**
+
+```{r}
+mod <- lm(EA2 ~ ext_c + neu_c, data = sub)
+coef(mod)
+```
+
+$$ \widehat{EA2} = 11 + 0.12 \cdot \text{ext} - 0.23 \cdot \text{neu}  $$
+
+Interpretation:
+
+$b_0 = 11$  
+- Der Mittelwert der positiven Aktiviertheit, da $\bar{x}_1 = 0$, $\bar{x}_2 = 0$ und $b_0 = \bar{y} - b_1 \cdot \bar{x}_1 - b_2 \cdot \bar{x}_2$   
+- Erwartete positive Aktiviertheit für durchschnittliche Personen (`ext_c` = 0 und `neu_c` = 0).
+
+$b_1 = 0.12$  
+- Extraversion hat einen (bedingten) positiven Effekt auf die Aktiviertheit.  
+- Entspricht dem Unterschied in der erwarteten positiven Aktiviertheit zwischen zwei Personen mit gleichen Neurotizismus-Werten, die sich in der Extraversion um eine Einheit unterscheiden.
+
+$b_2 = -0.23$  
+- Neurotizismus hat einen (bedingten) negativen Effekt auf die positive Aktiviertheit.  
+- Entspricht dem Unterschied in der erwarteten positiven Aktiviertheit zwischen zwei Personen mit gleicher Extraversion, die sich in ihren Neurotizismus-Werten um eine Einheit unterscheiden.
+
+iii) Wie hoch ist die Varianzaufklärung?
+
+**Lösung**
+
+```{r}
+summary(mod)$r.squared
+```
+
+- Rund 4% der Unterschiede in der Aktiviertheit können auf Unterschiede im Neurotizismus und der Extraversion zurückgeführt werden ($R^2 = 0.039$; kleiner Effekt).
+
+iv) Wie groß ist der Anteil an Varianz durch die Hinzunahme von Neurotizismus als Prädiktor?
+
+**Lösung**
+
+```{r}
+mod_ext <- lm(EA2 ~ ext_c, data = sub)
+summary(mod)$r.squared - summary(mod_ext)$r.squared
+```
+
+$$\Delta R^2_{neur} = 0.03$$
+
+Der Neurotizismus der Teilnehmer kann über die Extraversion hinaus rund 3% in der Aufklärung der Aktiviertheit beitragen.
+
+## Aufgabe 3
+
+Bestimmen Sie auch die standardisierten Regressionsgleichungen.
+
+**Lösung**
+
+```{r}
+sub_std <- data.frame(scale(sub))
+update(mod, data = sub_std)
+```
+
+$$\hat{z}_{EA2} = 0.08 \cdot z_{ext} - 0.17 \cdot z_{neu}$$
+
+
+
+
+
+
+

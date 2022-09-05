@@ -1,0 +1,88 @@
+---
+header-includes:
+  - \usepackage{fancyhdr}
+  - \usepackage{menukeys}
+  - \usepackage{enumitem}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \chead{Übungsblatt 9 - Multiple Regression}
+  - \rhead{\thepage}
+
+output:
+  pdf_document
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center", 
+               comment = NA, strip.white = TRUE, 
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+## Vorbereitung
+
+Bitte führen Sie zur Vorbereitung folgende Schritte aus:
+
+1.  Starten Sie RStudio.
+2.  Löschen Sie den Workspace. 
+3.  Setzen Sie das Arbeitsverzeichnis dort, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Öffnen Sie ein R-Skript.
+4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
+
+Für die folgenden Aufgaben nutzen wir einen neuen Datensatz `affect`, welcher sich im `psychTools` Paket befindet. Daher muss der Datensatz nicht wie gewöhnlich mit `load()` in das Environment geladen werden, sondern mit `data()`.
+
+```{r eval = FALSE}
+library(psychTools)
+data(affect)     # das dazugehörige Objekt heißt in R auch "affect"
+# View(affect)
+```
+
+Mit `?affect` können Sie sich eine Beschreibung des Datensatzes ausgeben lassen. Für die Aufgaben relevant sind neben den Persönlichkeitsdimensionen (`ext` = Extraversion, `neur` = Neurotizismus, `lie` = soziale Erwünschtheit) die Arousal Dimension "Energetic Arousal" (positive Aktiviertheit, Wachheit) vor und nach dem Zeigen eines Filmausschnitts abgefragt (entsprechend `EA1` & `EA2`).
+
+Im Folgenden soll es darum gehen, Unterschiede im Energetic Arousal nach dem Film (`EA2`) durch Persönlichkeitseigenschaften (Extraversion und Neurotizismus) vorherzusagen.
+
+## Aufgabe 1
+
+Bilden Sie ein Datensatzobjekt, das nur die Variablen `EA2`, `ext`, `neur` enthält sowie nur Personen mit gültigen Werten auf diesen Variablen. Verwenden Sie diesen Datensatz für die folgenden Aufgaben.
+
+## Aufgabe 2
+
+i) Zentrieren Sie die Prädiktoren Extraversion und Neurotizismus.
+
+ii) Bestimmen Sie die Regressionsgleichung zur Vorhersage von positiver Aktiviertheit durch Extraversion und Neurotizismus.
+
+iii) Wie hoch ist die Varianzaufklärung?
+
+iv) Wie groß ist der Anteil an Varianz durch die Hinzunahme von Neurotizismus als Prädiktor?
+
+## Aufgabe 3
+
+Bestimmen Sie auch die standardisierten Regressionsgleichungen.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

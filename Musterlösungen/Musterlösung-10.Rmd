@@ -1,0 +1,257 @@
+---
+header-includes:
+  - \usepackage{fancyhdr}
+  - \usepackage{menukeys}
+  - \usepackage{enumitem}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \chead{Musterlösung 10 - Diskrete und stetige Verteilungen}
+  - \rhead{\thepage}
+
+output:
+  pdf_document
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center", 
+               comment = NA, strip.white = TRUE, 
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+## Vorbereitung
+
+Bitte führen Sie zur Vorbereitung folgende Schritte aus:
+
+1.  Starten Sie RStudio.
+2.  Löschen Sie den Workspace. 
+3.  Setzen Sie das Arbeitsverzeichnis dort, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Öffnen Sie ein R-Skript.
+4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
+
+Lösen Sie die folgenden Aufgaben nur mit der Hilfe von R.
+
+## Aufgabe 1
+
+Das Gewicht der Studierenden, $X$, der PHB sei normalverteilt $\mathcal{N}(\mu, \sigma^2)$ mit $\mu = 70kg$ und $\sigma = 7.8kg$
+
+i) Wie wahrscheinlich ist es, dass eine Person 76kg oder mehr wiegt?
+
+**Lösung**
+
+```{r echo=FALSE, fig.cap="\\label{fig:figs3} Fläche = Wahrscheinlichkeit, dass ein Studierender 76kg oder mehr wiegt."}
+library(ggplot2)
+x <- seq(from = 45, to = 95, by = 0.1)
+y <- dnorm(x, 70, 7.8)
+d <- data.frame(x, y)
+ggplot(d, aes(x = x, y = y)) +
+  geom_line() +
+  geom_point(size = 0.5) +
+  geom_ribbon(fill = "steelblue", aes(ymax = y), ymin = 0, alpha = 0.5, data = subset(d, x >= 76)) +
+  xlab("Gewicht") +
+  theme_bw()
+```
+
+```{r}
+1 - pnorm(q = 76, mean = 70, sd = 7.8)
+pnorm(q = 76, mean = 70, sd = 7.8, lower.tail = FALSE)
+```
+
+ii) Wie wahrscheinlich ist es, dass eine Person zwischen 62.2kg und 77.8kg wiegt? (Überlegen Sie sich auch wie Sie diese Aufgabe ohne R lösen könnten)
+
+**Lösung**
+
+```{r echo=FALSE}
+x <- seq(from = 45, to = 95, by = 0.1)
+y <- dnorm(x, 70, 7.8)
+d <- data.frame(x, y)
+ggplot(d, aes(x = x, y = y)) +
+  geom_line() +
+  geom_point(size = 0.5) +
+  geom_ribbon(fill = "steelblue", aes(ymax = y), ymin = 0, alpha = 0.5, data = subset(d, x >= 62.2 & x <= 77.8)) +
+  xlab("Gewicht") +
+  theme_bw()
+```
+
+```{r}
+pnorm(q = 77.8, mean = 70, sd = 7.8) - pnorm(q = 62.2, mean = 70, sd = 7.8)
+```
+
+iii) Bestimmen Sie $P(X \leq 54)$, $P(88 \leq X \leq 54)$ und $P(X \geq 70)$
+
+**Lösung**
+
+$P(X \leq 54)$
+```{r}
+pnorm(q = 54, mean = 70, sd = 7.8)
+```
+
+$P(88 \leq X \leq 54)$
+
+```{r}
+pnorm(q = 88, mean = 70, sd = 7.8, lower.tail = FALSE) + 
+  pnorm(q = 54, mean = 70, sd = 7.8, lower.tail = TRUE)
+```
+
+$P(X \geq 70)$
+
+Die Normalverteilung ist symmetrisch um ihren Erwartungswert. Daher folgt: $P(X \geq 70) = 0.5$
+
+```{r}
+pnorm(q = 70, mean = 70, sd = 7.8, lower.tail = FALSE)
+```
+
+iv) Sie sprechen mit einer Person, die Ihnen mitteilt, dass mindestens 90 % der Studierenden weniger oder genauso viel wiegen wie diese Person. Wie groß ist das Gewicht dieser Person ?
+
+**Lösung**
+
+```{r}
+qnorm(p = 0.9, mean = 70, sd = 7.8)
+```
+```{r echo=FALSE}
+x <- seq(from = 45, to = 95, by = 0.1)
+y <- dnorm(x, 70, 7.8)
+d <- data.frame(x, y)
+ggplot(d, aes(x = x, y = y)) +
+  geom_line() +
+  geom_point(size = 0.5) +
+  geom_ribbon(fill = "steelblue", aes(ymax = y), ymin = 0, alpha = 0.5, data = subset(d, x <= qnorm(p = 0.9, mean = 70, sd = 7.8))) +
+  xlab("Gewicht") +
+  theme_bw()
+```
+v) Sie sprechen mit einer Person, die Ihnen mitteilt, dass 1 % der Studierenden mehr oder genauso viel wiegen wie diese Person. Wie groß ist das Gewicht dieser Person ?
+
+**Lösung**
+
+```{r}
+qnorm(p = 0.99, mean = 70, sd = 7.8)
+qnorm(p = 0.01, mean = 70, sd = 7.8, lower.tail = F)
+```
+```{r echo=FALSE}
+x <- seq(from = 45, to = 95, by = 0.1)
+y <- dnorm(x, 70, 7.8)
+d <- data.frame(x, y)
+ggplot(d, aes(x = x, y = y)) +
+  geom_line() +
+  geom_point(size = 0.5) +
+  geom_ribbon(fill = "steelblue", aes(ymax = y), ymin = 0, alpha = 0.5, data = subset(d, x <= qnorm(p = 0.99, mean = 70, sd = 7.8))) +
+  xlab("Gewicht") +
+  theme_bw()
+```
+
+vi) Veranschaulichen Sie graphisch die Dichtefunktion der Normalverteilung. Wählen Sie dafür eine sinnvolle Limitierung der x-Achse und beschriften Sie die Achsen. Wählen Sie auch einen Titel für die Graphik. 
+
+
+**Lösung**
+
+```{r}
+curve(dnorm(x,
+mean = 70, sd = 7.8),
+xlim = c(45, 95),
+ylab = "Dichte",
+xlab = "Gewicht",
+main = "Verteilung des Gewichts bei den Studierenden der PHB")
+```
+
+vii) In welchem Gewichtsbereich liegen die mittleren 20 % der Studierenden?
+
+**Lösung**
+
+Bestimmung des zentralen Schwankungsintervalls. Rechts und links müssen jeweils 40 % der Verteilung abgeschitten werden.
+
+```{r}
+qnorm(p = 0.40, mean = 70, sd = 7.8)
+qnorm(p = 0.40, mean = 70, sd = 7.8, lower.tail = F)
+```
+```{r echo=FALSE}
+x <- seq(from = 45, to = 95, by = 0.1)
+y <- dnorm(x, 70, 7.8)
+d <- data.frame(x, y)
+ggplot(d, aes(x = x, y = y)) +
+  geom_line() +
+  geom_point(size = 0.5) +
+  geom_ribbon(fill = "steelblue", aes(ymax = y), ymin = 0, alpha = 0.5, data = subset(d, x >= qnorm(p = 0.40, mean = 70, sd = 7.8) & x <= qnorm(p = 0.40, mean = 70, sd = 7.8, lower.tail = F))) +
+  xlab("Gewicht") +
+  theme_bw()
+```
+
+## Aufgabe 2
+
+Eine Multiple-Choice Klausur besteht aus 22 Fragen. Für jede Frage gibt es 5 Antwortalternativen, von welchen nur eine richtig ist.
+
+i) Angenommen Sie raten bei allen 22 Fragen, wie hoch ist die Wahrscheinlichkeit mindestens 4 Aufgaben richtig zu lösen?
+
+**Lösung**
+
+$P(X \geq 4)$
+
+```{r echo=FALSE}
+library(tidyverse)
+d <- tibble(x = seq(from = 0, to = 10, by = 1),
+            p = dbinom(x = x, size = 22, prob = 1/5))
+
+p1 <- ggplot(data = d, mapping = aes(x = x, y = p)) +
+  geom_bar(stat = "identity", fill = "white", color = "black") +
+  geom_bar(data = filter(d, x >= 4), stat = "identity", fill = "gray", color = "black") +
+  scale_x_continuous(breaks = d$x) +
+  theme_bw() + 
+  ylim(0, 1)
+p1
+```
+
+```{r}
+1 - pbinom(q = 3, size = 22, prob = 1/5, lower.tail = TRUE)
+pbinom(q = 3, size = 22, prob = 1/5, lower.tail = FALSE)
+```
+
+
+```{r}
+sum(dbinom(x = 4:22, size = 22, prob = 1/5))
+```
+
+
+ii) Kurz vor Schluss stellen Sie fest, dass Sie eine Seite mit Fragen überschlagen haben, auf der sich vier Fragen befanden, die jeweils sieben Antwortalternativen hatten. Schnell kreuzen Sie auch hier jeweils eine Antwort an, ohne über den Inhalt der Fragen nachzudenken. Wie groß ist die Wahrscheinlichkeit, dass Sie mindestens einmal richtig angekreuzt haben?
+
+**Lösung** 
+
+```{r}
+1 - pbinom(q = 0, size = 4, prob = 1/7, lower.tail = TRUE)
+pbinom(q = 0, size = 4, prob = 1/7, lower.tail = FALSE)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

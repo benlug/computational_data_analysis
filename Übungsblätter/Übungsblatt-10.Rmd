@@ -1,0 +1,94 @@
+---
+header-includes:
+  - \usepackage{fancyhdr}
+  - \usepackage{menukeys}
+  - \usepackage{enumitem}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \chead{Übungsblatt 10 - Diskrete und stetige Verteilungen}
+  - \rhead{\thepage}
+
+output:
+  pdf_document
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center", 
+               comment = NA, strip.white = TRUE, 
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+## Vorbereitung
+
+Bitte führen Sie zur Vorbereitung folgende Schritte aus:
+
+1.  Starten Sie RStudio.
+2.  Löschen Sie den Workspace. 
+3.  Setzen Sie das Arbeitsverzeichnis dort, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Öffnen Sie ein R-Skript.
+4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
+
+Lösen Sie die folgenden Aufgaben nur mit der Hilfe von R.
+
+## Aufgabe 1
+
+Das Gewicht der Studierenden, $X$, der PHB sei normalverteilt $\mathcal{N}(\mu, \sigma^2)$ mit $\mu = 70kg$ und $\sigma = 7.8kg$
+
+i) Wie wahrscheinlich ist es, dass eine Person 76kg oder mehr wiegt?
+
+ii) Wie wahrscheinlich ist es, dass eine Person zwischen 62.2kg und 77.8kg wiegt? (Überlegen Sie sich auch wie Sie diese Aufgabe ohne R lösen könnten)
+
+iii) Bestimmen Sie $P(X \leq 54)$, $P(88 \leq X \leq 54)$ und $P(X \geq 70)$
+
+iv) Sie sprechen mit einer Person, die Ihnen mitteilt, dass mindestens 90 % der Studierenden weniger oder genauso viel wiegen wie diese Person. Wie groß ist das Gewicht dieser Person ?
+
+v) Sie sprechen mit einer Person, die Ihnen mitteilt, dass 1 % der Studierenden mehr oder genauso viel wiegen wie diese Person. Wie groß ist das Gewicht dieser Person ?
+
+vi) Veranschaulichen Sie graphisch die Dichtefunktion der Normalverteilung. Wählen Sie dafür eine sinnvolle Limitierung der x-Achse und beschriften Sie die Achsen. Wählen Sie auch einen Titel für die Graphik. 
+
+vii) In welchem Gewichtsbereich liegen die mittleren 20 % der Studierenden?
+
+## Aufgabe 2
+
+Eine Multiple-Choice Klausur besteht aus 22 Fragen. Für jede Frage gibt es 5 Antwortalternativen, von welchen nur eine richtig ist.
+
+i) Angenommen Sie raten bei allen 22 Fragen, wie hoch ist die Wahrscheinlichkeit mindestens 4 Aufgaben richtig zu lösen?
+
+ii) Kurz vor Schluss stellen Sie fest, dass Sie eine Seite mit Fragen überschlagen haben, auf der sich vier Fragen befanden, die jeweils sieben Antwortalternativen hatten. Schnell kreuzen Sie auch hier jeweils eine Antwort an, ohne über den Inhalt der Fragen nachzudenken. Wie groß ist die Wahrscheinlichkeit, dass Sie mindestens einmal richtig angekreuzt haben?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

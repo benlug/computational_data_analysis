@@ -1,0 +1,71 @@
+---
+header-includes:
+  - \usepackage{fancyhdr}
+  - \usepackage{menukeys}
+  - \usepackage{enumitem}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \chead{Übungsblatt 8 - Einfache lineare Regression}
+  - \rhead{\thepage}
+
+output:
+  pdf_document
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center", 
+               comment = NA, strip.white = TRUE, 
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+## Vorbereitung
+
+Bitte führen Sie zur Vorbereitung folgende Schritte aus:
+
+1.  Starten Sie RStudio.
+2.  Löschen Sie den Workspace. 
+3.  Setzen Sie das Arbeitsverzeichnis, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Öffnen Sie ein R-Skript.
+4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
+
+Für die folgenden Aufgaben benutzen wir den `erstis_neu.RData` Datensatz.
+
+## Aufgabe 1
+
+(i) Erstellen Sie ein Streudiagramm mit der ruhigen Stimmung (`ru.1`) auf der Y-Achse und Neurotizismus (`neuro`) auf der X-Achse. Beschriften Sie dabei die Achsen und geben Sie der Graphik einen Titel. Beschreiben Sie anhand des Punkteschwarms die Form und Art des Zusammenhangs.
+(ii) Erstellen Sie ein Regressionsmodell zur Vorhersage von der ruhigen Stimmung (`ru`) durch Neurotizismus (`neuro`). Lassen Sie sich eine Zusammenfassung des Modells ausgeben. Wie viele Personen wurden in die Berechnung des Modells mit eingeschlossen?
+(iii) Fügen Sie die Regressionsgerade in ihr Streudiagramm ein und färben Sie die gerade blau.
+(iv) Notieren Sie die unstandardisierte Regressionsgleichung und interpretieren Sie die Koeffizienten inhaltlich.
+(v) Interpretieren Sie auch den Determinationskoeffizienten.
+(vi) Notieren Sie nun die standardisierte Regressionsgleichung.
+
+## Aufgabe 2
+
+Angenommen Sie erhalten lediglich den Wert der Produkt-Moment-Korrelation ($0.23$) zwischen zwei Variablen, Neurotizismus und Mathematikfähigkeit. Kann man mithilfe dieser Informationen Aussagen über den Determinationskoeffizienten $R^2$ machen? Und wenn ja, welche?
+
+## Aufgabe 3
+
+Sie interessieren sich für den Zusammenhang zwischen Extraversion (`extra`) und Alter (`alter`).
+
+(i) Stellen Sie den Zusammenhang graphisch dar.
+(ii) Bestimmen Sie, wie groß die Rangkorrelation nach Spearman ist. Lässt sich mithilfe dieses Maßes eine Aussage über den Determinationskoeffizienten $R^2$ machen?
+(iii) Erstellen Sie ein Regressionsmodell zur Vorhersage von der Extraversion durch das Alter, in dem Sie direkt ablesen können, wie groß der vorhergesagte Wert für eine Person mit durchschnittlichem Alter ist. 
+(iv) Wie groß ist der vorhergesagte Wert für die erste Person unseres Datensatzes?
+(v) In welcher Range bewegen sich die Residuen des Modells? Wie groß ist der Standardschätzfehler?
+
+## Aufgabe 4
+
+Bestimmen Sie die Produkt-Moment-Korrelation zwischen Prokrastination (`prok`) und Alter (`alter`), nachdem Sie beide Variablen für die Gewissenhaftigkeit (`gewiss`) kontrolliert haben.
+
+
+
+
+
+
+
+

@@ -1,0 +1,389 @@
+---
+output:
+  bookdown::pdf_document2:
+    pandoc_args: '_common/header.yaml'
+    includes:
+      in_header: 
+        - _tex/preamble.tex
+header-includes:
+  - \chead{Bivariate Deskriptivstatistik}
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center", 
+               comment = NA, strip.white = TRUE, 
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+```{r echo=F}
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))  # set wd in source file location
+```
+
+In diesem Kapitel zur Deskriptivstatistik wird es um die Möglichkeiten gehen, die R Ihnen bietet, um Daten durch Tabellen, bestimmte Kennzahlen oder Grafiken zusammenzufassen und darzustellen. Die bivariate Deskriptivstatistik bezieht sich dabei auf das Betrachten von zwei Variablen.
+
+# Metrische Variablen
+
+```{=tex}
+\begin{tcolorbox}[colback = red!5!white, colframe = red!75!black, title = StatsReminder]
+Metrische Variablen umfassen intervall- und verhältnisskalierte Variablen. Bei der Messung von intervallskalierten Variablen wird die Äquivalenz, die Ordnung und die Verhältnisse von Differenzen verschiedener Ausprägungen berücksichtigt. 
+\tcblower
+Verhältnisskalierte Variablen haben zusätzlich einen natürlichen Nullpunkt. Ein klassisches Beispiel einer verhältnisskalierten Variable ist die Größe einer Person. Bei einer solchen Variable lassen sich zusätzlich Aussagen über die Verhältnisse zwischen Werten der Variable machen. Eine Person, die 1,60 cm groß ist, ist zweimal so groß als eine 80 cm große Person. 
+\end{tcolorbox}
+```
+```{r echo=F}
+load("dat/erstis_neu.RData") 
+```
+
+## Streudiagramm zweier metrischer Variablen
+
+Mit einem Streudiagramm lassen sich Wertepaare zweier Variablen in einer Grafik betrachten. Es ist wichtig, dass diese Variablen an denselben Personen erhoben werden, damit die Wertepaare logisch in das Streudiagramm abgetragen werden können. Oft wird das Streudiagramm auch Punktewolke oder *Scatterplot* genannt. Generell liefert ein Streudiagramm Informationen über:
+
+-   Die Form des Zusammenhangs zweier Variablen (z. B. linear, quadratisch, kubisch)
+-   Die Richtung des Zusammenhangs zweier Variablen (z. B., positiver oder negativer linearer Zusammenhang)
+-   Stärke des Zusammenhangs zweier Variablen
+-   Ausreißer in den Daten
+
+Die `plot()`-Funktion wurde bereits im letzten Kapitel eingeführt. Mit dieser lassen sich Streudiagramme schnell und einfach erstellen:
+
+```{r}
+plot(x = erstis$prok, y = erstis$lz.1,
+     xlab = "Prokrastination",
+     ylab = "Lebenszufriedenheit",
+     main = "Scatterplot")
+```
+
+-   Hier wurde auf der x-Achse Prokrastination und auf der y-Achse Lebenszufriedenheit zum ersten Messzeitpunkt abgetragen
+
+    -   die Argumente `x` und `y` entsprechen den Achsen im Koordinatensystem
+
+Alternativ:
+
+```{r eval=F}
+plot(lz.1 ~ prok, data = erstis)
+```
+
+Der Ausdruck `lz.1 ~ prok` stellt eine Formel dar. In R werden Ihnen solche Formeln immer wieder begegnen. Insbesondere dann, wenn Grafiken (wie oben) oder statistische Modelle erstellt werden. Die Formel `lz.1 ~ prok` kann wie folgt gelesen werden: *`lz.1` (Lebenszufriedenheit) wird erklärt durch `prok` (Prokrastination)* oder *`lz.1` soll in Abhängigkeit von `prok` in einem Streudiagramm dargestellt werden*.\
+**Wichtig**: In Formeln kann der \$-Operator nicht verwendet werden, daher muss der `plot()`-Funktion das `data`-Argument übergeben werden. Mit dem `data`-Argument teilen wir der `plot()`-Funktion mit, wo die in der Formel verwendeten Variablen zu finden sind.
+
+In solchen Grafiken kann es zu Überlappungen kommen, die in einem regulären Streudiagramm nur schwer erkennbar sind. Um Überlappungen von Wertepaaren visuell erkennbar zu machen, kann man die Funktion `sunflowerplot()` verwenden:
+
+```{r}
+sunflowerplot(lz.1 ~ prok, data = erstis)
+```
+
+-   Wertepaare, die überlappen, werden hier als zusätzliche *Blütenblätter* dargestellt
+
+    -   jedes Blütenblatt (roter Strich) signalisiert, dass sich ein weiterer Punkt unter dem sichtbaren Punkt befindet
+
+## Kovarianz und Produkt-Moment-Korrelation
+
+```{=tex}
+\begin{tcolorbox}[colback = red!5!white, colframe = red!75!black, title = StatsReminder]
+Kovarianz und Produkt-Moment-Korrelation sind Maße für den linearen Zusammenhang zweier Variablen. 
+
+Die Kovarianz wird wie folgt berechnet (siehe Vorlesungsunterlagen):
+$$
+s_{xy} = \frac{\sum_{m=1}^{n}(x_m-\bar{x})(y_m-\bar{y})}{n}
+$$
+
+Bei einer positiven Kovarianz $s_{xy}$ kann man folgern, dass sich die Werte der Variablen in dieselbe Richtung bewegen. Übersetzt: Umso höher die Ausprägung einer Person auf Variable $X$, desto höher ist tendenziell auch ihre Ausprägung auf der Variable $Y$, d. h. hohe Werte auf einer Variablen gehen in der Tendenz mit hohen Werten auf der anderen Variablen einher. \\
+Im Gegensatz zur positiven Kovarianz kann man anhand einer negativen Kovarianz folgern, dass sich die Variablen in verschiedene Richtungen bewegen. Übersetzt: Umso höher die Ausprägung einer Person auf Variable $X$, desto niedriger ist tendenziell auch ihre Ausprägung auf der Variable $Y$, d. h. hohe Werte auf einer Variablen gehen in der Tendenz mit niedrigen Werten auf der anderen Variablen einher. Wenn die Kovarianz nahe Null liegt, deutet das darauf hin, dass kein linearer Zusammenhang zwischen den Variablen besteht.
+\tcblower
+Im Gegensatz zum Vorzeichen der Kovarianz lässt sich der Wert $s_{xy}$ in der Regel nicht oder nur schwer  interpretieren. Das liegt daran, dass die Kovarianz ein unstandardisiertes Maß ist. Wenn die Kovarianz standardisiert wird, erhalten wir die Produkt-Moment-Korrelation:
+$$
+r_{xy} = \frac{\sum_{m=1}^{n}(x_m-\bar{x})(y_m-\bar{y})}{s_x s_y}
+$$
+Die Werte der Korrelation lassen sich nun über die Vorzeichen hinaus interpretieren. Sie lassen nun auch Aussagen über die Stärke des Zusammenhangs zu. Die Korrelation kann Zahlen aus dem Intervall $[-1,1]$ annehmen, wobei ein Werte um $0.1$ als klein, Werte um $0.3$ als moderat und Werte ab $0.5$ als großer Zusammenhang interpretiert werden.
+\end{tcolorbox}
+```
+In R erhält man die Kovarianz und die Produkt-Moment-Korrelation respektive mit:
+
+```{r}
+cov(erstis$prok, erstis$lz.1, use = "complete")
+cor(erstis$prok, erstis$lz.1, use = "complete")
+```
+
+-   Die Kovarianz ist kein standardisiertes Zusammenhangsmaß, d.h. wir können aus dem Ergebnis nicht ablesen, ob der Zusammenhang stark oder schwach ist. Wir sehen nur, dass der Wert negativ ist. Für die Berechnung der Kovarianz in R mit dem Befehl cov() gilt der gleiche Hinweis wie für Berechnung der Varianz/Standardabweichung. Die in R berechneten Koeffizienten weichen von den „per Hand“ berechneten Kennzahlen anhand der Formeln aus der VL ab. Das Ergebnis der Korrelation hingegen ist identisch zu der Berechnung „per Hand“.
+
+-   Die Korrelation lässt uns auch eine Aussage über die Stärke des Zusammenhangs machen
+
+    -   Es gibt einen mittelstarken negativen linearen Zusammenhang zwischen `lz.1` und `prok`
+    -   Es folgt: Je höher die Lebenszufriedenheit, desto tendenziell geringer die Prokrastination 
+
+Auch die Funktionen `cov()` für die Kovarianz und `cor()` für die Produkt-Moment-Korrelation benötigen Angaben über den Umgang mit fehlenden Werten. Das Argument heißt hier `use` und hat verschiedene Optionen. Das Argument `use = "everything"` ist die Voreinstellung und führt zum Ergebnis `NA`, sobald es für die ausgewählten Variablen Personen mit fehlenden Werten gibt. Das Argument `use = "complete"` bedeutet, dass Personen mit fehlenden Werten auf einer der Variablen ausgeschlossen werden.
+
+Üblicherweise interessiert man sich nicht nur für die Korrelation zweier Variablen in einem Datensatz, sondern für die paarweisen Korrelationen zwischen mehreren Paaren aus Variablen in einem Datensatz. Um die paarweisen Korrelationen zwischen Variablen zu berechnen, indexieren wir unseren Data Frame `erstis` mit einem Zeichenvektor, der die Variablennamen beinhaltet und legen das Resultat in einem neuen Objekt ab. Anschließend kann die Korrelationsmatrix mit dem regulären Befehl `cor()` ausgegeben werden:
+
+```{r}
+dat <- erstis[, c("extra", "prok", "lz.1")]   # Vorauswahl der Variablen
+cor(dat, use = "complete")
+```
+
+-   Diese Tabelle gibt alle bivariaten Korrelationen für Variablen des (Sub-)Datensatzes an
+
+    -   man nennt eine Tabelle aus Korrelationen auch *Korrelationsmatrix*
+
+-   Auf der Diagonalen liegen die Korrelationen der Variablen mit sich selber
+
+## Umgang mit fehlenden Werten
+
+Bei der Anforderung von bivariaten Korrelationen für mehr als 2 Variablen spielt der Umgang mit fehlenden Werten eine Rolle. Hier kann zwischen dem listenweisen und dem paarweisen Ausschluss von fehlenden Werten unterschieden werden.
+
+-   Listenweiser Fallausschluss
+
+    -   entspricht dem strengen Umgang mit fehlenden Werten -\> nur Personen mit gültigen Werten auf allen Variablen des Datensatzes werden analysiert
+    -   `use = "complete"`
+
+-   Paarweiser Fallausschluss
+
+    -   entspricht dem liberalen Umgang mit fehlenden Werten -\> Personen, die *paarweise* gültige Werte haben, werden analysiert (also Werte nur auf den Spalten, die für die Berechnung der Kovarianz/Korrelation benötigt werden)
+    -   `use = "pairwise"`
+
+### Produkt-Moment-Korrelation bei Ausreißern
+
+Die Produkt-Moment-Korrelation reagiert sensitiv auf Ausreißer, d.h. auf einzelne Wertepaare, die aus dem Muster "ausscheren". Ausreißer sind extreme Werte (oder außergewöhnliche Werte im Kontext der Daten). Im statistischen Jargon heißt *sensitiv*, dass die Produkt-Moment-Korrelation nicht robust gegenüber Ausreißern ist. Ausreißer können also das Ergebnis der Produkt-Moment-Korrelation deutlich verändern.
+
+Beispiel:
+
+```{r}
+a <- c(4.5, 5, 3.25, 4)
+b <- c(6, 12, 4.75, 5.5)
+plot(a, b)
+cor(a, b)
+```
+
+### Rangkorrelation nach Spearman
+
+Bei Vorliegen von Ausreißern kann es sinnvoll sein, anstelle der Produkt-Moment-Korrelation die Rangkorrelation nach Spearman zu bestimmen. Sie ist definiert als Produkt-Moment-Korrelation der Ränge auf den beiden Variablen.
+
+```{r}
+a <- c(4.5, 5, 3.25, 4)
+b <- c(6, 12, 4.75, 5.5)
+rank(a)
+rank(b)
+```
+
+-   Die vier Personen haben auf beiden Variablen die gleiche Rangfolge: Die erste Person hat auf Variable `a` und Variable `b` den 3. Rang. Die dritte Person hat auf beiden Variablen die geringste Ausprägung und daher den ersten Rang usw.
+
+```{r}
+cor(rank(a), rank(b))
+```
+
+-   Die Produkt-Moment-Korrelation der Ränge ist daher 1
+
+```{r}
+cor(a,b, method = "spearman")
+```
+
+-   Mit dem `method` Argument kann man spezifizieren, welcher Korrelationstyp verwendet werden soll
+
+    -   `method = "pearson"` entspricht der Produkt-Moment-Korrelation, welcher der default ist
+
+# Zwei ordinalskalierte kategoriale Merkmale
+
+Wir erinnern uns, dass ordinalskalierte Daten einer Rangreihe folgen. Ein klassisches Beispiel für ein ordinalskaliertes Merkmal wären Schulnoten. Im `erstis`-Datensatz sind die Stimmungsvariablen "müde" (`stim7`) und "entspannt" (`stim12`) Beispiele für ordinalskalierte Merkmale (Antworten der Personen auf Items mit geordneten Antwortkategorien).
+
+```{r}
+table(erstis$stim7, erstis$stim12)
+```
+
+## $\gamma$-Koeffzient
+
+Der $\gamma$-Koeffzient wird für die Berechnung der Korrelation zwischen zwei geordneten ordinalskalierten kategorialen Merkmalen verwendet.
+
+```{r}
+library(Hmisc)
+rcorr.cens(erstis$stim7, erstis$stim12, outx = TRUE)[2]
+```
+
+-   Für die Berechnung des $\gamma$-Koeffizienten benutzt man die `rcorr.cens()`-Funktion, welche im `Hmisc`-Paket zu finden ist
+
+    -   der output dieser Funktion bietet viele Informationen; für den Moment reicht es den $\gamma$-Koeffzienten ausgeben zu lassen (daher die Indexierung `[2]`)
+
+# Zwei nominalskalierte kategoriale Merkmale
+
+Merkmale sind nominalskaliert, wenn die Ausprägungen des Merkmals voneinander unterscheidbare, ungeordnete Kategorien sind. Im `erstis`-Datensatz sind `job` und `wohnort.alt` nominalskalierte Variablen.
+
+```{r}
+table(erstis$job, erstis$wohnort.alt)
+```
+
+Es gibt verschiedene Möglichkeiten, nominalskalierte Variablen graphisch darzustellen.
+
+```{r}
+barplot(table(erstis$job, erstis$wohnort.alt))
+```
+
+-   Per Default stellt der Barplot die Kategorien "gestapelt" dar
+
+Eine elegantere Variante ist die Darstellung als gruppiertes Säulendiagramm:
+
+```{r}
+barplot(table(erstis$job, erstis$wohnort.alt),
+        beside = TRUE)
+```
+
+-   Die Häufigkeiten sind nun deutlich einfacher zu vergleichen
+
+    -   durch das `beside = TRUE` Argument werden die Balken nebeneinander dargestellt
+
+-   Diese Darstellung lässt sich natürlich auch ein wenig aufwerten:
+
+```{r}
+barplot(table(erstis$job, erstis$wohnort.alt),
+        beside = TRUE,
+        main = "Nebenjob (ja/nein) \n in Abhängigkeit vom alten Wohnort",
+        ylab = "Absolute Häufigkeiten",
+        ylim = c(0, 100),
+        col = c("coral", "skyblue"),
+        legend = TRUE)
+```
+
+-   Bedeutung der Argumente:
+
+    -   `main`: Hier kann die Überschrift als Zeichenvektor übergeben werden (das `\n` beduetet das an dieser Stelle ein Zeilenumbruch eingefügt werden soll)
+    -   `ylab`: Hier kann die Y-Achsenbeschriftung verändert werden
+    -   `ylim`: Hier kann der gewünschte Wertebereich der Y-Achse bestimmt werden
+    -   `col`: Dient der Bestimmung der Säulenfarben
+    -   `legend`: Hier kann man sich eine Legende zur Beschriftung der Farben ausgeben lassen
+
+Mit `?barplot` kann man sich weitere Informationen zu Argumenten bzgl. der Bearbeitung von Barplots und Grafiken im Allgemeinen anlesen.
+
+<!-- ## $\mathcal{X}^{2}$ und Cramér's $V$ -->
+
+<!-- Für die Berechnung der Zusammenhangsmaße $\mathcal{X}^{2}$ und Cramér's $V$ benutzen wir das Paket `vcd`. -->
+
+<!-- ```{r} -->
+<!-- library(vcd) -->
+<!-- assocstats(table(erstis$job, erstis$wohnort.alt)) -->
+<!-- ``` -->
+
+<!-- -   die `assocstats()` Funktion gibt eine Reihe von Maßen aus -->
+
+<!--     -   $\mathcal{X}^{2}$ ist in der zweiten Zeile und der ersten Spalte zu finden (Pearson - X\^2) -->
+<!--     -   Cramér's $V$ ist in der gleich betitelten Zeile zu finden (letzte Zeile) -->
+
+<!-- Das $\mathcal{X}^{2}$, das Sie in der Vorlesung kennengelernt haben, ist ein unstandardisiertes Zusammenhangsmaß und ist daher schwer interpretierbar. -->
+
+<!-- Cramér's $V$ ist ein standardisiertes Zusammenhangsmaß (normiertes $\mathcal{X}^{2}$). Der Wertebereich ist daher zwischen 0 und 1. Für die Interpretation gibt es folgende Daumenregeln: -->
+
+<!-- $V = 0$: kein Zusammenhang\ -->
+<!-- $V = 0.1$: schwacher Zusammenhang\ -->
+<!-- $V = 0.3$: mittelstarker Zusammenhang\ -->
+<!-- $V = 0.5$: starker Zusammenhang\ -->
+<!-- $V = 1$: perfekter Zusammenhang -->
+
+<!-- Die Interpretation für unser Beispiel wäre dann: Ob Studierende einen Nebenjob haben, ist abhängig von ihrem Wohnort 12 Monate vor der Befragung. Der Zusammenhang ist schwach bis mittelstark ($V = 0.287$). -->
+
+# Spezialfall: Zwei dichotome Merkmale
+
+Wenn beide Variablen dichotom sind, können folgende Koeffizienten bestimmt werden:
+
+-   $\varphi$-Koeffizient\
+-   Yule's $Q$\
+-   Odd's Ratio
+
+Für die Berechnung dieser Koeffizienten nutzen wir die Variablen `uni7` (Unisport) und `uni8` (Unipartys).
+
+```{r}
+table(erstis$uni7, erstis$uni8)
+addmargins(table(erstis$uni7, erstis$uni8))
+```
+
+-   mit `addmargins()` lassen sich zusätzlich die Randsummen einer Tabelle ausgeben
+
+```{r}
+library(psych)    # psych: Funktionen für die Berechnung von Yule's Q und phi-Koeffizient
+phi(table(erstis$uni7, erstis$uni8))  # phi-Koeffizient
+Yule(table(erstis$uni7, erstis$uni8)) # Yule's Q
+```
+
+-   mit `phi()` wird der $\varphi$-Koeffizient berechnet
+
+-   mit `Yule()` wird Yule's $Q$ berechnet
+
+    -   an beide Funktionen müssen die Daten der Variablen in Tabellenformat übergeben werden (`table()`)
+
+Interpretation der Koeffizienten: Personen, die am Unisport teilnehmen, gehen auch eher auf Uniparties als Personen, die keinen Unisport machen.
+
+Eine simple Interpretationshilfe kann wie folgt veranschaulicht werden:
+
+```{=tex}
+\begin{center}
+  \includegraphics[width=7cm]{img/interpretation_help_dichotomous.pdf}
+\end{center}
+```
+Die blaue linie beschreibt einen positiven Zusammenhang: Kategorie A von Variable 1 geht eher mit Kategorie A von Variable 2 einher (und B eher mit B).\
+Die gelbe Linie beschreibt einen negativen Zusammenhang: Kategorie A von Variable 1 geht eher mit Kategorie B von Variable 2 einher (und B eher mit A).
+
+Die Odd's Ratio lässt sich wie folgt bestimmen:
+
+```{r}
+library(DescTools)
+OddsRatio(table(erstis$uni7, erstis$uni8))
+```
+
+Interpretation der Odd's Ratio: Die Chance, nicht auf Unipartys zu gehen, ist bei Personen, die nicht am Unisport teilnehmen, gut 6-mal größer als bei Personen, die am Unisport teilnehmen.
+
+# Ein kategoriales und ein metrisches Merkmal
+
+## Gruppierte Deskriptivstatistiken
+
+Wenn man sich die Verteilungskennwerte eines metrischen Merkmals in Abhängigkeit eines kategorialen Merkmals (also die Verteilungen innerhalb der Gruppen der kategorialen Variable) anschauen möchte, kann `tapply()` verwendet werden. In unserem Beispiel verwenden wir das metrische Merkmal *wache Stimmung* (`wm`) und das kategoriale Merkmal Gruppe (`gruppe`).
+
+```{r}
+tapply(erstis$wm.1, erstis$gruppe, mean, na.rm = TRUE)
+```
+
+-   `tapply()` wendet Funktionen auf Subgruppen an, z. B. die mittlere Wachheit getrennt nach Kursen
+
+    -   zuerst wird `erstis$wm.1` übergeben (das Merkmal, für das ein bestimmter Kennwert berechnet werden soll)
+    -   `erstis$gruppe` ist der Faktor, welcher die Gruppen definiert
+    -   `mean` ist die anzuwendende Funktion (in diesem Fall der Kennwert), der berechnet werden soll (hier könnten auch andere Funktionen wie bspw. `sd()` verwendet werden)
+    -   an letzter Stelle können Argumente für die anzuwendende Funktion übergeben werden
+
+Interpretation: Teilnehmer im Kurs 1 scheinen im Mittel etwas wacher zu sein als der Durchschnitt, während Teilnehmer im Kurs 3 weniger wach zu sein scheinen.
+
+Wenn man eine umfangreiche gruppierte Übersicht zu diversen Statistiken erstellen will, kann man `describeBy()` verwenden.
+
+```{r}
+library(psych)
+describeBy(erstis$wm.1, erstis$gruppe)
+```
+
+Eine grafische Veranschaulichung wäre ein gruppierter Boxplot:
+
+```{r}
+boxplot(wm.1 ~ gruppe, data = erstis)
+```
+
+-   Hier zeigen alle vier Boxplots die Verteilung der wach-müde Stimmung innerhalb der Kategorien des Merkmals `gruppe`
+
+\newpage
+
+# Übersicht
+
+## Neue wichtige Konzepte
+
+-   **Streudiagramm**
+-   **Kovarianz & Korrelation**
+-   **Zusammenhangsmaße von nominalskalierten und ordinalskalierten Variablen**
+-   **Gruppierte Deskriptivstatistiken**
+
+## Neue wichtige Befehle, Argumente, Operatoren
+
+| Funktion                              | Verwendung                                                                                                          |
+|---------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| `plot(y ~ x)`                         | Erstellt ein Streudiagramm für die kontinuierlichen Variablen x und y                                               |
+| `sunflowerplot(y ~ x)`                | Streudiagramm, wobei multiple Datenpunkte als zusätzliche "Blätter" dargestellt werden                              |
+| `cor(x, y)`   `cor(Daten)`                           | Bestimmt die Pearson-Korrelation für die Variablen x und y bzw. alle bivariaten Korrelationen im Datensatz `Daten`. |                                                                                                            |
+| `rcorr.cens(Daten)`                   | Bestimmt den $\gamma$-Koeffzienten                                                                                  |
+| `phi(table(Daten))`                   | Bestimmt den $\varphi$-Koeffizienten                                                                                |
+| `Yule(table(Daten))`                  | Bestimmt den Yule's $Q$                                                                                             |
+| `addmargins(table(Daten))`            | Berechnet die Randsummen einer Tabelle                                                                              |
+| `OddsRatio(table(Daten))`             | Bestimmt die Odd's Ratio                                                                                            |

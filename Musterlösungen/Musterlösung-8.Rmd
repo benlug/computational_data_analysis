@@ -1,0 +1,223 @@
+---
+header-includes:
+  - \usepackage{fancyhdr}
+  - \usepackage{menukeys}
+  - \usepackage{enumitem}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \chead{Musterlösung 8 - Einfache lineare Regression}
+  - \rhead{\thepage}
+
+output:
+  pdf_document
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center", 
+               comment = NA, strip.white = TRUE, 
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+## Vorbereitung
+
+Bitte führen Sie zur Vorbereitung folgende Schritte aus:
+
+1.  Starten Sie RStudio.
+2.  Löschen Sie den Workspace. 
+3.  Setzen Sie das Arbeitsverzeichnis dort, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Öffnen Sie ein R-Skript.
+4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
+
+```{r echo=F}
+setwd("C:/Users/Ben/OneDrive/PhD/teaching/R-Übung/Musterlösungen")  # set wd in source file location
+load("../Datensätze/erstis_neu.RData")
+```
+
+## Aufgabe 1
+
+(i) Erstellen Sie ein Streudiagramm mit der ruhigen Stimmung (`ru.1`) auf der Y-Achse und Neurotizismus (`neuro`) auf der X-Achse. Beschriften Sie dabei die Achsen und geben Sie der Graphik einen Titel. Beschreiben Sie anhand des Punkteschwarms die Form und Art des Zusammenhangs.
+
+**Lösung**
+
+```{r}
+sunflowerplot(ru.1 ~ neuro, data = erstis,
+              xlab = "Neurotizismus",
+              ylab = "Ruhige Stimung",
+              main = "Bivariater Zusammenhang")
+```
+
+- schwacher bis mittelstarker negativer linearer Zusammenhang
+
+(ii) Erstellen Sie ein Regressionsmodell zur Vorhersage von der ruhigen Stimmung (`ru`) durch Neurotizismus (`neuro`). Lassen Sie sich eine Zusammenfassung des Modells ausgeben. Wie viele Personen wurden in die Berechnung des Modells mit eingeschlossen?
+
+\newpage
+**Lösung**
+
+```{r}
+m1 <- lm(ru.1 ~ neuro, data = erstis)
+summary(m1)
+```
+Es wurden 188 Personen in die Berechnung des Modells mit eingeschlossen (191 - 3 Beobachtungen, die als fehlend gelöscht wurden).
+
+(iii) Fügen Sie die Regressionsgerade in ihr Streudiagramm ein und färben Sie die gerade blau.
+
+**Lösung**
+
+```{r}
+sunflowerplot(ru.1 ~ neuro, data = erstis,
+              xlab = "Neurotizismus",
+              ylab = "Ruhige Stimung",
+              main = "Bivariater Zusammenhang")
+
+abline(reg = m1, col = "blue")
+```
+
+(iv) Notieren Sie die unstandardisierte Regressionsgleichung und interpretieren Sie die Koeffizienten inhaltlich.
+
+**Lösung**
+
+```{r}
+coef(m1)
+# Alternativ: m1$coefficients
+```
+
+$$
+\text{ru.1} = 4.46 - 0.35*\text{neuro}
+$$
+- der vorhergesagte Wert der ruhigen Stimmung für Personen mit einem Neurotizismuswert von 0 beträgt $b_0 = 4.46$  
+- zwei Personen, die sich um eine Einheit im Neurotizismus unterscheiden, unterscheiden sich in ihren erwarteten Stimmungswerten um $0.35$, wobei der Wert für die Person mit höherem Neurotizismus geringer (=unruhiger) ist  
+- auch hier wäre die Zentrierung des Prädiktors sinnvoll, da $0$ außerhalb des Wertebereichs liegt
+
+(v) Interpretieren Sie auch den Determinationskoeffizienten.
+
+**Lösung**
+
+```{r}
+summary(m1)$r.squared
+```
+- rund 10% der Unterschiede in der ruhigen Stimmung können auf Unterschiede im Neurotizismus zurückgeführt
+werden, $R^2 = 0.102$
+
+(vi) Notieren Sie nun die standardisierte Regressionsgleichung.
+
+**Lösung**
+
+```{r}
+cor(erstis$ru.1, erstis$neuro, use = "complete")
+```
+
+$$
+\hat{z}_{ru.1} = -0.32 * z_{neuro}
+$$
+
+Alternativ:
+```{r}
+std2 <- data.frame(scale(m1$model))
+m1_std <- update(m1, data = std2)
+coef(m1_std)
+```
+
+**Achtung**: Die `scale()` Funktion kann nur auf numerische Vektoren angewendet werden, also nicht auf das gesamte `erstis` Objekt, da dieses auch Faktoren enthält. Bilden Sie einen Teildatensatz oder nutzen Sie Ihr Wissen, um die Gleichung zu formulieren.
+
+## Aufgabe 2
+
+Angenommen Sie erhalten lediglich den Wert der Produkt-Moment-Korrelation ($0.23$) zwischen zwei Variablen, Neurotizismus und Mathematikfähigkeit. Kann man mithilfe dieser Informationen Aussagen über den Determinationskoeffizienten $R^2$ machen? Und wenn ja, welche?
+
+**Lösung**
+
+Bei der einfach linearen Regression entspricht das Bestimmtheitsmaß $R^2$ dem quadrierten Korrelationskoeffizienten (nach Pearson).
+
+```{r}
+0.23^2
+```
+
+## Aufgabe 3
+
+Sie interessieren sich für den Zusammenhang zwischen Extraversion (`extra`) und Alter (`alter`).
+
+(i) Stellen Sie den Zusammenhang graphisch dar.
+
+**Lösung**
+
+```{r}
+# Erstellen eines Sub-Datensatzes ohne fehlende Werte 
+# nicht zwingend notwendig, aber sinnvoll für weitere Unteraufgaben
+sub <- na.omit(erstis[,c("extra","alter")]) 
+
+sunflowerplot(extra ~ alter, data = sub,
+              xlab = "Alter",
+              ylab = "Extraversion",
+              main = "Bivariater Zusammenhang")
+
+```
+(ii) Bestimmen Sie, wie groß die Rangkorrelation nach Spearman ist. Lässt sich mithilfe dieses Maßes eine Aussage über den Determinationskoeffizienten $R^2$ machen?
+
+**Lösung**
+
+```{r}
+cor(sub$extra, sub$alter, method = "spearman", use= "complete")
+```
+Die Rangkorrelation nach Spearman erlaubt, anders als die Produkt-Moment-Korrelation nach Pearson, keine Aussagen über den Determinationskoeffizienten $R^2$ des bivariaten Regressionsmodells. 
+
+(iii) Erstellen Sie ein Regressionsmodell zur Vorhersage von der Extraversion durch das Alter, in dem Sie direkt ablesen können, wie groß der vorhergesagte Wert für eine Person mit durchschnittlichem Alter ist. 
+
+**Lösung**
+
+```{r}
+sub$alter_c <- scale(sub$alter, scale = F, center = T)
+m2 <- lm(extra ~ alter_c, data = sub)
+summary(m2)
+```
+
+Die vorhergesagte Extraversion für eine Person mit durchschnittlichem Alter unseres Datensatzes beträgt 3.58 Punkte.
+
+(iv) Wie groß ist der vorhergesagte Wert für die erste Person unseres Datensatzes?
+
+**Lösung**
+
+```{r}
+sub$yDach <- predict(m2)
+sub[1,"yDach"]
+```
+
+(v) In welcher Range bewegen sich die Residuen des Modells? Wie groß ist der Standardschätzfehler?
+
+**Lösung**
+
+```{r}
+summary(resid(m2))
+sd(resid(m2))
+```
+Die Residuen liegen im Intervall von -2 bis 1.5. Der Standardschätzfehler beträgt 0.65. 
+
+### Aufgabe 4
+
+Bestimmen Sie die Produkt-Moment-Korrelation zwischen Prokrastination (`prok`) und Alter (`alter`), nachdem Sie beide Variablen für die Gewissenhaftigkeit (`gewiss`) kontrolliert haben.
+
+**Lösung**
+
+```{r}
+#install.packages("ppcor")
+library(ppcor)
+sub2 <- na.omit(erstis[, c("prok", "gewiss", "alter")])
+pcor(sub2[, c("prok", "gewiss", "alter")])$estimate
+```
+
+Die gesuchte Partialkorrelation beträgt -0.51.
+
+
+
+
+
+
+
+
+
+
+
+

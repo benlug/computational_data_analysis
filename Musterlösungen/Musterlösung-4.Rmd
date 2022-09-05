@@ -1,0 +1,184 @@
+---
+header-includes:
+  - \usepackage{fancyhdr}
+  - \usepackage{menukeys}
+  - \usepackage{enumitem}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \chead{Musterlösung 4 - Univariate Deskriptivstatistik I}
+  - \rhead{\thepage}
+
+output:
+  pdf_document
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center", 
+               comment = NA, strip.white = TRUE, 
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+## Vorbereitung
+
+Bitte führen Sie zur Vorbereitung folgende Schritte aus:
+
+1.  Starten Sie RStudio.
+2.  Löschen Sie den Workspace. 
+3.  Setzen Sie das Arbeitsverzeichnis dort, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Öffnen Sie ein R-Skript.
+4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
+
+```{r echo=F}
+setwd("C:/Users/Ben/OneDrive/PhD/teaching/R-Übung/Musterlösungen")  # set wd in source file location
+load("../Datensätze/erstis_neu.RData")
+```
+
+## Aufgabe 1 - Modus & Häufigkeitstabelle
+
+Erstellen Sie eine Häufigkeitstabelle für die Variable der Kursgruppe (`gruppe`) und bestimmen Sie den Modus, (a) indem Sie ihn aus der Tabelle ablesen und (b) indem Sie eine angemessene Grafik erstellen und den Modus daran ablesen.
+
+**Lösung**
+
+```{r}
+table(erstis$gruppe)
+```
+- Mo = `Gruppe 2`
+
+```{r}
+barplot(table(erstis$gruppe))
+```
+
+**Zusatzaufgabe**: Benutzen Sie einen anderen Befehl, um sich den Modus direkt ausgeben zu lassen. (Hinweis: Installieren Sie dafür ggf. neue Pakete.)
+
+**Lösung**
+
+```{r}
+#install.packages("DescTools")
+library(DescTools)
+Mode(erstis$gruppe, na.rm = T)
+```
+
+## Aufgabe 2 - Median
+
+(i) Erstellen Sie eine Tabelle, die die prozentuale und die kumulierte prozentuale Häufigkeitsverteilung des Items `lz17` („Wenn ich mein Leben noch einmal leben könnte, würde ich kaum etwas ändern.“) gemeinsam abbildet (auf zwei Nachkommastellen gerundet). Bestimmen Sie den Median für diese Variable (a) anhand der erstellten Tabelle, (b) anhand des Befehls für Quantile, und (c) anhand des Befehls für den Median.
+
+**Lösung**
+
+Häufigkeitstabelle für das Item `lz17`.
+
+```{r}
+(lz17abs <- table(erstis$lz17))
+```
+
+Prozentual und kumulierte prozentuale Häufigkeitsverteilung von lz17, auf zwei Nachkommstellen gerundet.
+
+```{r}
+lz17pro <- 100*prop.table(lz17abs)
+lz17kum <- cumsum(lz17pro)
+(lz17tab <- round(cbind(lz17pro, lz17kum), digits = 2))
+```
+- Spezialfall: 50% wird in Klasse 4 genau erreicht, aber nicht überschritten.
+- Vorgehen “per Hand” -> Anzahl gültiger Werte gerade oder ungerade?
+
+```{r}
+sum(lz17abs)
+```
+- Gerade Anzahl -> wir mitteln also 4 (höchster Wert untere Hälfte) und 5 (geringster Wert obere Hälfte), um bei Md = 4,5 anzugelangen.
+
+```{r}
+quantile(erstis$lz17, type = 5, na.rm = TRUE)
+```
+- Berechnung des Medians mittels `quantile()` Befehl
+
+```{r}
+median(erstis$lz17, na.rm = TRUE)
+```
+- Berechnung des Medians mittels `median()` Befehl
+
+(ii) Eine Person sagt "Mindestens 10 % der Personen haben einen Wert angekreuzt, der kleiner oder gleich meinem Wert ist." Welchen Wert hat die Person? 
+
+**Lösung**
+
+```{r}
+quantile(erstis$lz17, type = 5, na.rm = TRUE, probs = c(.1))
+```
+- Die Person hat einen Wert von 2. 
+
+(iii) Eine Person sagt "Mindestens 70 % der Personen haben einen Wert angekreuzt, der kleiner oder gleich meinem Wert ist." Welchen Wert hat die Person? 
+
+```{r}
+quantile(erstis$lz17, type = 5, na.rm = TRUE, probs = c(.7))
+```
+- Die Person hat einen Wert von 6. 
+
+Alternativ könnte man die entsprechenden Werte auch aus der Häufigkeitstabelle ablesen. Hier schauen wir, wann bei den kumulierten Häufigkeiten 10% bzw. 70% erstmalig überschritten sind. 
+
+## Aufgabe 3 - Median II
+
+(i) Schauen Sie sich die fünf Persönlichkeitsdimensionen (`neuro`, `extra`, `gewiss`, `vertraeg`, `intell`) an. Beantworten Sie die Frage, für welche Skala der Median am höchsten ist. (a) graphisch, (b) mithilfe eines Befehls.
+
+**Lösung**: Verträglichkeit hat den höchsten Median.
+
+(i) graphisch
+```{r}
+set <- c("neuro", "extra", "gewiss", "vertraeg", "intell")
+boxplot(erstis[, set])
+```
+(ii)
+```{r}
+median(erstis$neuro, na.rm = T)
+median(erstis$extra, na.rm = T)
+median(erstis$gewiss, na.rm = T)
+median(erstis$vertraeg, na.rm = T)
+median(erstis$intell, na.rm = T)
+```
+
+(ii) Erstellen Sie ein Balkendiagramm für die Variable mit dem höchsten Median. Färben Sie alle Balken in unterschiedlichen Farben, dabei die Mediankategorie rot. Schreiben Sie den Namen der Variablen an die X-Achse.
+
+**Lösung**
+
+
+```{r}
+barplot(table(erstis$vertraeg),
+        xlab = "Verträglichkeit",
+        col = c("yellow","orange","lightgreen",
+                "lavender","purple","white","blue","grey","red",
+                "green","brown","black","darkgrey") )
+```
+\newpage
+## Zusatzaufgabe: Relativer Informationsgehalt
+
+Suchen Sie aus dem Datensatz die Stimmungs-Variable (`stim1` bis `stim12`) mit den meisten fehlenden Werten. Bestimmen Sie für diese Variable den relativen Informationsgehalt H. Ist Ihrer Meinung nach der relative
+Informationsgehalt H bestmöglich geeignet, um die Streuung der Merkmale darzustellen?
+
+**Lösung**
+
+```{r}
+set2 <- c("stim1","stim2","stim3","stim4","stim5",
+          "stim6","stim7","stim8","stim9","stim10",
+          "stim11","stim12")
+summary(erstis[,set2])
+```
+
+- `stim1` und `stim2` haben beide die meisten fehlenden Werte (3). Zur Übung bestimmen wir den relativen Informationsgehalt mal für beide Variablen. 
+
+Für `stim1` beträgt H 
+```{r}
+h_j <- prop.table(table(erstis$stim1))
+-(1/log(length(h_j))) * sum(h_j*log(h_j))
+```
+
+Für `stim2` beträgt H 
+```{r}
+h_j <- prop.table(table(erstis$stim2))
+-(1/log(length(h_j))) * sum(h_j*log(h_j))
+```
+
+Der relative Informationsgehalt kann für die beiden Stimmungsvariablen berechnet werden. Um das Skalenniveau der Variablen bestmöglich auszunutzen, eigenen sich Quantile jedoch besser. Beim relativen Informationsgehalt erhalten wir lediglich eine Aussage, wie stark die Streuung über die verschiedenen Kategorien ist (homogenes vs. heterogenes Merkmal). Quantile berücksichtigen auch die Ordnung der Kategorien.
+
+

@@ -1,0 +1,116 @@
+---
+header-includes:
+  - \usepackage{fancyhdr}
+  - \usepackage{menukeys}
+  - \usepackage{enumitem}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \chead{Musterlösung 6 - Univariate Deskriptivstatistik II}
+  - \rhead{\thepage}
+
+output:
+  pdf_document
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center", 
+               comment = NA, strip.white = TRUE, 
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+## Vorbereitung
+
+Bitte führen Sie zur Vorbereitung folgende Schritte aus:
+
+1.  Starten Sie RStudio.
+2.  Löschen Sie den Workspace. 
+3.  Setzen Sie das Arbeitsverzeichnis dort, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Öffnen Sie ein R-Skript.
+4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
+
+```{r echo=F}
+setwd("C:/Users/Ben/OneDrive/PhD/teaching/R-Übung/Musterlösungen")  # set wd in source file location
+load("../Datensätze/erstis_neu.RData")
+```
+
+## Aufgabe 1 - Verteilung eines Merkmals
+
+(i) Untersuchen Sie die Form der Verteilung der Prokrastination (`prok`) anhand von Modalwert, Median und Mittelwert.
+
+(ii) Stellen Sie die Verteilung auch grafisch mithilfe eines Histogramms dar. Zeichnen Sie in diesem Histogramm den Mittelwert ein. Färben Sie die Balken lila. Benennen Sie das Diagramm mit dem Titel "Histogramm von Prokrastination". Benennen Sie die Y-Achse mit "Häufigkeit" und löschen Sie den Titel der X-Achse.
+
+**Lösung**
+
+```{r}
+summary(erstis$prok)
+library(DescTools)
+Mode(erstis$prok, na.rm = T)
+```
+- Verteilung von Prokrastination 
+  + Mittelwert und Median sind fast identisch, d. h. einigermaßen symmetrisch verteilt
+  + der Mittelwert ist etwas geringer als der Median 
+  + Q1 und Q3 sind auch etwa gleich weit entfernt vom Median -> spricht auch für Symmetrie
+  + Der Modalwert, d.h. die häufigste Punktzahl, beträgt 2.3 und ist etwas geringer als der Median und Mittelwert. 
+
+```{r}
+hist(erstis$prok, right = FALSE, col = "purple",
+     main = "Histogramm von Prokrastination",
+     ylab = "Häufigkeit", 
+     xlab = "")
+abline( v = mean(erstis$prok, na.rm=T),
+        lwd = 5)
+```
+
+## Aufgabe 2 - z-Transformation
+
+Transformieren Sie die Variable `lz.2` (entsprechend der z-Transformation). Interpretieren Sie den z-transformierten Wert der 11. Person.
+
+**Lösung**
+
+```{r}
+lz.2_z <- scale(erstis$lz.2)
+lz.2_z[11]
+```
+
+Die 11. Person hat einen z-standardisierten Wert von $-3.22$ in Lebenszufriedenheit (2. Messzeitpunkt). Ihre Lebenszufriedenheit liegt also über drei Standardabweichungen unter dem Durchschnitt.
+
+## Aufgabe 3 - Streuungsmaße
+
+(i) Berechnen Sie, mit welchem Alter die Personen ihr Abitur gemacht haben. Berechnen Sie dann die Standardabweichung für dieses Alter.
+
+```{r}
+erstis$Alter_bei_Abitur <- erstis$abi - erstis$gebjahr 
+sd(erstis$Alter_bei_Abitur, na.rm = T)
+```
+
+(ii) Zentrieren Sie die neu gebildete Variable und bestimmen Sie zur Überprüfung Mittelwert und Standardabweichung, jeweils auf zwei Nachkommastellen gerundet. 
+
+```{r}
+erstis$Alter_bei_Abitur_c <- scale(erstis$Alter_bei_Abitur, scale = F)
+round(mean(erstis$Alter_bei_Abitur_c, na.rm = T), digits = 2)
+round(sd(erstis$Alter_bei_Abitur_c, na.rm = T), digits = 2)
+```
+
+(iii) Bestimmen Sie, mit welchem Alter die meisten Teilnehmenden ihr Abitur gemacht haben mithilfe eines Befehls.
+
+```{r}
+Mode(erstis$Alter_bei_Abitur, na.rm = T)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

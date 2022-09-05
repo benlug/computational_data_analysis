@@ -1,0 +1,164 @@
+---
+header-includes:
+  - \usepackage{fancyhdr}
+  - \usepackage{menukeys}
+  - \usepackage{enumitem}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \chead{Musterlösung 2 - Datenimport}
+  - \rhead{\thepage}
+
+output:
+  pdf_document
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center", 
+               comment = NA, strip.white = TRUE, 
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+## Vorbereitung
+
+Bitte führen Sie zur Vorbereitung folgende Schritte aus:
+
+1.  Starten Sie RStudio.
+2.  Löschen Sie den Workspace. 
+3.  Setzen Sie das Arbeitsverzeichnis, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Öffnen Sie ein R-Skript.
+4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
+
+## Aufgabe 1 - Öffnen von Datenformaten in R
+
+Achten Sie auf die Benutzung des richtigen Befehls und der richtigen Argumente!
+
+(i) Rufen Sie die Hilfeseite zur Funktion `read.csv()` auf und überfliegen Sie die **Details-**Sektion. Es wird nicht von Ihnen verlangt, dass Sie die Inhalte sofort und vollständig verstehen. Es geht lediglich um ein erstes Vertrautmachen mit den Hilfeseiten.    
+Gibt es einen Unterschied zwischen der `read.csv()`- und `read.table()`-Funktion? Wenn ja, was unterscheidet diese Funktionen?
+
+**Lösung:**
+
+```{r}
+?read.csv
+```
+
+Auf der Hilfeseite können Sie folgenden Absatz finden:
+
+![](img/readtable_helppage.png)
+
+Aus diesem Absatz können Sie entnehmen, dass `read.csv` und `read.table` bis auf die *Defaults* der Argumente identisch sind. Defaults sind die Grundwerte, die die Argumente einer Funktion haben, bevor sie vom Nutzer verändert werden.
+
+Beispiel aus der Vorlesung:
+```{r}
+log(2)
+```
+
+Standardmäßig hat `log` $e$ als Basis.
+
+Den genauen Unterschied zwischen den Defaults der `read.table` und `read.csv` können Sie der **Usage-**Sektion entnehmen.
+
+(ii) Laden Sie mit R die Datei `test.csv` (Moodle) und speichern Sie den Inhalt in einem Objekt `testdaten`.
+
+**Lösung:**
+
+```{r eval=F}
+testdaten <- read.table("Dateipfad",
+                       header = TRUE,
+                       sep = ";",
+                       na.strings = "-999")  
+```
+oder
+```{r eval=F}
+testdaten <- read.csv2("Dateipfad",
+                      na.strings = "-999")
+```
+Hier sind die Defaults bereits so gesetzt, dass lediglich ein eintippen des Datenorts notwendig ist.
+
+(iii) Lassen Sie sich den Inhalt des Datensatzes angeben. 
+
+**Lösung:**
+
+```{r eval=F}
+testdaten
+```
+
+## Aufgabe 2 - Installieren und Laden eines Pakets
+
+(i) Prüfen Sie, ob das Paket `psych` bereits installiert ist. Wenn nicht, installieren Sie es bitte, indem Sie den notwendigen Befehl verwenden. Falls das Paket schon installiert ist, aktualisieren Sie es, sodass Sie die neuste Version haben.
+
+**Lösung:**
+
+```{r eval=F}
+install.packages("psych")
+```
+
+Falls bereits installiert:
+
+```{r eval=F}
+update.packages()
+```
+
+(ii) Aktivieren Sie das Paket in R
+
+**Lösung:**
+
+```{r}
+library(psych)
+```
+
+**By the way**: Sie können auch Hilfeseiten zu Paketen aufrufen!
+```{r eval=F}
+?psych
+```
+
+## Aufgabe 3 - Speichern von Objekten
+
+(i) Speichern Sie den Datensatz `testdaten` in einem anderen Format als dem ursprünglichen csv-Format.
+
+**Lösung:**
+
+```{r eval = F}
+save(testdaten, file = "testdaten.RData")
+```
+**By the way**: Alternativ können Sie auch mithilfe der `write.table`-Funktion Datensätze in anderen Formaten als dem R-eigenen Dateiformat abspeichern. Als kleine Zusatzübung erkunden Sie diese Funktion über die Hilfe-Seite.
+
+## Zusatzaufgabe: Eigene Funktionen in R (für Fortgeschrittene)
+
+**Lösung**
+
+```{r}
+mal3 <- function(x) { # x ist unser Argument    
+  x <- x * 3          # Inhalt der Funktion
+  return(x)           # Rückgabewert
+}
+```
+
+Nun können wir die Funktion mit dem Funktionsnamen aufrufen. Hier wurde 3 als Argument für `x` übergeben:
+
+```{r}
+mal3(x = 3)
+```
+
+Wie sonst auch können wir der Funktion ein Objekt übergeben.
+
+```{r}
+zahl <- 10
+mal3(zahl)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

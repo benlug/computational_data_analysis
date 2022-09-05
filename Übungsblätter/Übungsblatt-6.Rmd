@@ -1,0 +1,54 @@
+---
+header-includes:
+  - \usepackage{fancyhdr}
+  - \usepackage{menukeys}
+  - \usepackage{enumitem}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \chead{Übungsblatt 6 - Bivariate Deskriptivstatistik I}
+  - \rhead{\thepage}
+
+output:
+  pdf_document
+---
+
+```{r, echo=F}
+library(knitr)
+opts_chunk$set(fig.width = 5, fig.height = 3.8, fig.align = "center", 
+               comment = NA, strip.white = TRUE, 
+               out.width = ".8\\textwidth",
+               warning = FALSE, message = FALSE, 
+               background = "springgreen3")
+#knit_theme$set(knit_theme$get()[9])
+options(digits = 7)
+```
+
+## Vorbereitung
+
+Bitte führen Sie zur Vorbereitung folgende Schritte aus:
+
+1.  Starten Sie RStudio.
+2.  Löschen Sie den Workspace. 
+3.  Setzen Sie das Arbeitsverzeichnis dort, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Öffnen Sie ein R-Skript und laden Sie den Datensatz `erstis_neu`.
+4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
+
+Für die folgenden Aufgaben benutzen wir den `erstis_neu.RData` Datensatz.
+
+## Aufgabe 1 
+
+Erstellen Sie mit zwei unterschiedlichen Befehlen Streudiagramme für die Variablen Gewissenhaftigkeit (`gewiss`) und Prokrastination (`prok`). Welcher Befehl ist vorteilhafter? Warum? 
+Beschreiben Sie anhand des Punkteschwarms die Form und Art des Zusammenhangs.
+
+## Aufgabe 2
+
+(i) Berechnen Sie den Zusammenhang zwischen Gewissenhaftigkeit (`gewiss`) und Prokrastination (`prok`). Bestimmen Sie zunächst ein unstandardisiertes und dann ein standardisiertes Maß für den Zusammenhang. Interpretieren Sie Ihr Ergebnis inhaltlich.
+
+(ii) Bestimmen Sie ein standardisiertes Maß für den Zusammenhang, das beim Vorliegen von Ausreißern empfohlen wird.
+
+
+## Aufgabe 3
+
+Laut Theorie sollen die Big Five (`extra`, `vertraeg`, `gewiss`, `neuro`, `intell`) voneinander unabhängig sein. Statistisch ausgedrückt heißt das, dass die Korrelationen zwischen den Variablen gleich Null sind. Überprüfen Sie, ob dies im vorliegenden Datensatz (zumindest annähernd) der Fall ist. Berücksichtigen Sie dabei nur Fälle, die auf allen Variablen gültige Werte habe.
+
+
