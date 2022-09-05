@@ -52,7 +52,7 @@ lm(formel)
 Für die Berechnung der Partialkorrelationen spielt die Reihenfolge keine Rolle. Sie übergeben `pcor` einen Data Frame mit den entsprechenden Variablen. Es wird im Kontext von Korrelationen auch nicht von unabhängigen und abhängigen Variablen gesprochen. Bei Korrelationen geht man nicht von einem gerichteten Zusammenhang aus.
 
 ```{r echo=FALSE}
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))  # set wd in source file location
+setwd("C:/Users/Ben/OneDrive/PhD/teaching/computational_data_analysis/Skript")  # set wd in source file location
 load("dat/erstis_neu.RData") 
 sub <- na.omit(erstis[, c("lz.1", "gs.1", "wm.1")])
 ```

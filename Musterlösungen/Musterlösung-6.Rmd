@@ -36,7 +36,7 @@ Bitte führen Sie zur Vorbereitung folgende Schritte aus:
 Für die folgenden Aufgaben benutzen wir den `erstis_neu.RData` Datensatz.
 
 ```{r echo=F}
-setwd("C:/Users/Ben/OneDrive/PhD/teaching/R-Übung/Musterlösungen")  # set wd in source file location
+setwd("C:/Users/Ben/OneDrive/PhD/teaching/computational_data_analysis/Musterlösungen")  # set wd in source file location
 load("../Datensätze/erstis_neu.RData")
 ```
 

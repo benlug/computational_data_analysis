@@ -21,7 +21,7 @@ options(digits = 7)
 ```
 
 ```{r echo=F}
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))  # set wd in source file location
+setwd("C:/Users/Ben/OneDrive/PhD/teaching/computational_data_analysis/Skript")  # set wd in source file location
 ```
 
 Die Deskriptivstatistik ist ein wichtiger Bestandteil einer statistischen Analyse. In den Kapiteln zur uni- und bivariaten Deskriptivstatistik werden Sie Werkzeuge kennenlernen, die R Ihnen bietet, um Daten durch Tabellen, Kennzahlen oder Grafiken zusammenzufassen und darzustellen. Die univariate Deskriptivstatistik bezieht sich dabei auf das Beschreiben und Zusammenfassen einzelner Variablen innerhalb eines Datensatzes. 

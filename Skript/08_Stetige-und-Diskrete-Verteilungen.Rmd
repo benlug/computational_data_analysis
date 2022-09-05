@@ -10,7 +10,7 @@ header-includes:
 ---
 
 ```{r, echo=FALSE}
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+setwd("C:/Users/Ben/OneDrive/PhD/teaching/computational_data_analysis/Skript")
 ```
 
 ```{r, echo=F}
