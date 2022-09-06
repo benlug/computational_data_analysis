@@ -1,7 +1,7 @@
 ---
 output:
   bookdown::pdf_document2:
-    pandoc_args: '_common/header.yaml'
+    pandoc_args: "_common/header.yaml"
     includes:
       in_header: 
         - _tex/preamble.tex

@@ -1,15 +1,11 @@
 ---
-header-includes:
-  - \usepackage{fancyhdr}
-  - \usepackage{menukeys}
-  - \usepackage{enumitem}
-  - \pagestyle{fancy}
-  - \fancyhf{}
-  - \chead{Musterlösung 9 - Multiple Regression}
-  - \rhead{\thepage}
-
 output:
-  pdf_document
+  pdf_document:
+    includes:
+      in_header: 
+        - _tex/preamble.tex
+header-includes: 
+  - \chead{Musterlösung 9 - Multiple Regression}
 ---
 
 ```{r, echo=F}

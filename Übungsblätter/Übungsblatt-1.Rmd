@@ -1,15 +1,11 @@
 ---
-header-includes:
-  - \usepackage{fancyhdr}
-  - \usepackage{menukeys}
-  - \usepackage{enumitem}
-  - \pagestyle{fancy}
-  - \fancyhf{}
-  - \chead{Übungsblatt 1 - Einführung in R}
-  - \rhead{\thepage}
-
 output:
-  pdf_document
+  pdf_document:
+    includes:
+      in_header: 
+        - _tex/preamble.tex
+header-includes: 
+  - \chead{Übungsblatt 1 - Einführung in R}
 ---
 
 ```{r, echo=F}

@@ -1,15 +1,11 @@
 ---
-header-includes:
-  - \usepackage{fancyhdr}
-  - \usepackage{menukeys}
-  - \usepackage{enumitem}
-  - \pagestyle{fancy}
-  - \fancyhf{}
-  - \chead{Musterlösung 10 - Diskrete und stetige Verteilungen}
-  - \rhead{\thepage}
-
 output:
-  pdf_document
+  pdf_document:
+    includes:
+      in_header: 
+        - _tex/preamble.tex
+header-includes: 
+  - \chead{Musterlösung 10 - Diskrete und stetige Verteilungen}
 ---
 
 ```{r, echo=F}
