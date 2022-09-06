@@ -11,4 +11,4 @@ This repository contains the course materials for a first year "Statistics with 
 
 ## makefiles
 
-The script, exercise and solution folder contain a makefile for quick and easy rendering of all rmds.
+The script, exercise and solution folder contain a makefile for quick and easy rendering of all rmds within that folder.
