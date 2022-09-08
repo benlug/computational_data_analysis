@@ -25,7 +25,7 @@ Bitte führen Sie zur Vorbereitung folgende Schritte aus:
 
 1.  Starten Sie RStudio.
 2.  Löschen Sie den Workspace. 
-<!-- 3. Setzen Sie das Arbeitsverzeichnis, wo Sie Ihre Daten abgelegt haben:   --> <!-- \menu{Session > Set Working Directory > Choose Directory}. -->
+<!-- 3. Setzen Sie das Arbeitsverzeichnis: \menu{Session > Set Working Directory > Choose Directory}. -->
 3.  Öffnen Sie ein R-Skript.
 4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
 
