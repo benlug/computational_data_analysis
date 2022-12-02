@@ -29,7 +29,7 @@ Bitte führen Sie zur Vorbereitung folgende Schritte aus:
 3.  Öffnen Sie ein R-Skript.
 4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
 
-Lösen Sie die folgenden Aufgaben nur mit der Hilfe von R.
+Lösen Sie die folgenden Aufgaben nur mit Hilfe von R.
 
 ## Aufgabe 1
 

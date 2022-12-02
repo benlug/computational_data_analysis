@@ -25,7 +25,7 @@ Bitte führen Sie zur Vorbereitung folgende Schritte aus:
 
 1.  Starten Sie RStudio.
 2.  Löschen Sie den Workspace. 
-3.  Setzen Sie das Arbeitsverzeichnis, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Setzen Sie das Arbeitsverzeichnis: \menu{Session > Set Working Directory > Choose Directory}.
 3.  Öffnen Sie ein R-Skript.
 4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
 
@@ -63,16 +63,16 @@ Den genauen Unterschied zwischen den Defaults der `read.table` und `read.csv` k�
 
 ```{r eval=F}
 testdaten <- read.table("Dateipfad",
-                       header = TRUE,
-                       sep = ";",
-                       na.strings = "-999")  
+                        header = TRUE,
+                        sep = ";",
+                        na.strings = "-999")  
 ```
 oder
 ```{r eval=F}
 testdaten <- read.csv2("Dateipfad",
-                      na.strings = "-999")
+                       na.strings = "-999")
 ```
-Hier sind die Defaults bereits so gesetzt, dass lediglich ein eintippen des Datenorts notwendig ist.
+Hier sind die Defaults bereits so gesetzt, dass lediglich ein eintippen des Datenorts und der Kodierung der fehlenden Werte notwendig ist.
 
 (iii) Lassen Sie sich den Inhalt des Datensatzes angeben. 
 
@@ -112,6 +112,8 @@ library(psych)
 ```
 
 ## Aufgabe 3 - Speichern von Objekten
+
+*(Diese Aufgabe ist nicht prüfungsrelevant)*
 
 (i) Speichern Sie den Datensatz `testdaten` in einem anderen Format als dem ursprünglichen csv-Format.
 

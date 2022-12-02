@@ -21,7 +21,7 @@ options(digits = 7)
 ```
 
 ```{r echo=F}
-setwd("C:/Users/Ben/OneDrive/PhD/teaching/computational_data_analysis/Skript")  # set wd in source file location
+setwd(this.path::here())  # set wd in source file location
 ```
 
 # Einfache Lineare Regression in R

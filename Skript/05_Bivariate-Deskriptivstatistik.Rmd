@@ -21,7 +21,7 @@ options(digits = 7)
 ```
 
 ```{r echo=F}
-setwd("C:/Users/Ben/OneDrive/PhD/teaching/computational_data_analysis/Skript")  # set wd in source file location
+setwd(this.path::here())  # set wd in source file location
 ```
 
 In diesem Kapitel zur Deskriptivstatistik wird es um die Möglichkeiten gehen, die R Ihnen bietet, um Daten durch Tabellen, bestimmte Kennzahlen oder Grafiken zusammenzufassen und darzustellen. Die bivariate Deskriptivstatistik bezieht sich dabei auf das Betrachten von zwei Variablen.

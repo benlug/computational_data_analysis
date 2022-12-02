@@ -6,6 +6,7 @@ output:
         - _tex/preamble.tex
 header-includes: 
   - \chead{Musterlösung 3 - Datenmanagement}
+urlcolor: blue
 ---
 
 ```{r, echo=F}
@@ -25,7 +26,7 @@ Bitte führen Sie zur Vorbereitung folgende Schritte aus:
 
 1.  Starten Sie RStudio.
 2.  Löschen Sie den Workspace. 
-3.  Setzen Sie das Arbeitsverzeichnis, wo Sie Ihre Daten abgelegt haben: \menu{Session > Set Working Directory > Choose Directory}.
+3.  Setzen Sie das Arbeitsverzeichnis: \menu{Session > Set Working Directory > Choose Directory}.
 3.  Öffnen Sie ein R-Skript.
 4.  Nachdem Sie die Aufgaben bearbeitet haben, speichern Sie das Skript unter einem geeigneten Namen ab.
 
@@ -36,7 +37,7 @@ Bitte führen Sie zur Vorbereitung folgende Schritte aus:
 **Lösung**
 
 ```{r echo=F}
-setwd("C:/Users/Ben/OneDrive/PhD/teaching/computational_data_analysis/Musterlösungen")  # set wd in source file location
+setwd(this.path::here())  # set wd in source file location
 ```
 
 ```{r}
@@ -192,13 +193,77 @@ summary(erstis$wm)
 
 ```
 
+## Zusatzaufgabe 1: Logische Bedingungen - `if` condition
 
+*(Diese Aufgabe ist nicht prüfungsrelevant)*
 
+(i) Schreiben Sie eine `if` condition, welche überprüft, ob eine beliebige Zahl größer als 4 ist. Ist die Zahl größer als 4, soll folgende Nachricht in der Konsole ausgegeben werden: Die Zahl ist größer als 4! 
+Nutzen Sie dafür die Funktion `print()`. (`?print` könnte hilfreich sein). Überprüfen Sie die Richtigkeit Ihres Codes, indem Sie nacheinander $-5, 3.99, 100$ in die Bedingung einsetzen.
 
+**Lösung**
 
+```{r}
+zahl <- -5
+if (zahl > 4) {
+  print("Die Zahl ist größer als 4!")
+}
+```
+```{r}
+zahl <- 3.99
+if (zahl > 4) {
+  print("Die Zahl ist größer als 4!")
+}
+```
+```{r}
+zahl <- 100
+if (zahl > 4) {
+  print("Die Zahl ist größer als 4!")
+}
+```
 
+(ii) Schreiben Sie eine `if` condition, welche überprüft, ob eine beliebige Zahl gerade ist. Lassen Sie sich eine geeignete Nachricht in der Konsole ausgeben, falls die Zahl gerade sein sollte.
+Überprüfen Sie die Richtigkeit Ihres Codes, indem Sie nacheinander $-2, 6, \pi$ in die Bedinung einsetzen.  
+**Tipp**: Die Modulooperation `%%` könnte hier hilfreich sein. Mit der Modulooperation berechnet man den Rest einer Division zweier Zahlen. (siehe die Beispiele im Modulokapitel auf Wikipedia: [Wikipedia - Modulo](https://de.wikipedia.org/wiki/Division_mit_Rest#Modulo))
 
+Beispiel:
+```{r}
+9 %% 3
+10 %% 3
+```
 
+**Lösung**
+
+```{r}
+if (zahl %% 2 == 0) {
+  print("Die Zahl ist gerade!")
+}
+```
+
+## Zusatzaufgabe 2: Logische Bedingungen - `if-else` condition
+
+*(Diese Aufgabe ist nicht prüfungsrelevant)*
+
+Ergänzen Sie die in Zusatzaufgabe 1 erstellten `if` conditions, um ein `else`. Überlegen Sie sich eine passende Nachricht (via `print()`) für die Ausgabe in der Konsole, wenn die Konsequenz der `else`-Bedingung zutrifft. 
+
+**Lösung**
+
+```{r}
+zahl <- 4
+if (zahl > 4) {
+  print("Die Zahl ist größer als 4!")
+} else {
+  print("Die Zahl ist kleiner gleich 4!")
+}
+```
+
+```{r}
+zahl <- 3
+if (zahl %% 2 == 0) {
+  print("Die Zahl ist gerade!")
+} else {
+  print("Die Zahl ist ungerade!")
+}
+```
 
 
 

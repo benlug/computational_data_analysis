@@ -21,7 +21,7 @@ options(digits = 7)
 ```
 
 ```{r echo=F}
-setwd("C:/Users/Ben/OneDrive/PhD/teaching/computational_data_analysis/Skript")  # set wd in source file location
+setwd(this.path::here())  # set wd in source file location
 ```
 
 Die Deskriptivstatistik ist ein wichtiger Bestandteil einer statistischen Analyse. In den Kapiteln zur uni- und bivariaten Deskriptivstatistik werden Sie Werkzeuge kennenlernen, die R Ihnen bietet, um Daten durch Tabellen, Kennzahlen oder Grafiken zusammenzufassen und darzustellen. Die univariate Deskriptivstatistik bezieht sich dabei auf das Beschreiben und Zusammenfassen einzelner Variablen innerhalb eines Datensatzes. 
@@ -77,24 +77,19 @@ median(erstis$lz13, na.rm = TRUE)
   - Der Median ist gleich dem 50. Quantil und kann dementsprechend interpretiert werden
     + Mindestens 50 % der Studierenden haben einen Wert von 5 oder kleiner angekreuzt.
 
-## Streuungsmaße (oder Dispersionsmaße)
-
-Kennwerte der zentralen Tendenz können für verschiedene Variablen ähnliche oder sogar gleiche Werte annehmen. Aber heißt das auch, dass die *Verteilungen* dieser Variablen ähnlich oder gleich sein müssen? Beispielsweise wäre es möglich, dass die Variablen "Wohnort vor 12 Monaten" und "Wohnort jetzt" denselben Modus haben. Das ist aber kein Indikator dafür, dass die Ausprägungen der Merkmalsträger sich bei beiden Variablen gleich über die Kategorien verteilen.
-Das gilt natürlich auch für alle anderen Lagemaße! Nur weil die Verteilungen von zwei Variablen den gleichen Median aufweisen, heißt das nicht, dass die Verteilungen identisch aussehen. Streuungsmaße geben Aufschluss darüber, wie die Daten um den Median streuen, d. h., wie sich die Beobachtungen über die verschiedenen Kategorien verteilen / wie große die Unterschiedlichkeit der Ausprägungen über die Merkmalsträger ist.
-
 ### Quantil
 
-Ein populäres Streuungsmaß ist das Quantil. Mithilfe von Quantilen kann man Aussagen zur Streuung von Daten machen. **Zur Erinnerung**: Ein $p$-Quantil ist ein Wert $x_p$ ($0 < p < 1$), für den gilt, dass mindestens ein Anteil $p \cdot 100\%$ der Daten kleiner oder gleich $x_p$ und mindestens ein Anteil $(1-p)\cdot100\%$ der Daten größer oder gleich $x_p$ ist. So ist beispielsweise der Median das 50. Quantil (auch Perzentil), da der Median die Daten genau dort teilt, wo 50 % der Werte unter und über dem Median liegen. In R kann man mit `quantile()` beliebige Quantile bestimmen:
+Quantile können als Verallgemeinerung des Medians verstanden werden und dienen dazu, sich ein genaueres Bild über die Lage einer Verteilung zu machen. **Zur Erinnerung**: Ein $p$-Quantil ist ein Wert $x_p$ ($0 < p < 1$), für den gilt, dass mindestens ein Anteil $p \cdot 100\%$ der Daten kleiner oder gleich $x_p$ und mindestens ein Anteil $(1-p)\cdot100\%$ der Daten größer oder gleich $x_p$ ist. So ist beispielsweise der Median das 50. Quantil (auch Perzentil), da der Median die Daten genau dort teilt, wo 50 % der Werte unter und über dem Median liegen. Ein Quartil ist ein weiteres wichtiges Quantil, welches die Verteilung einer Variable in vier gleich häufig besetzte Kategorien unterteilt. In R kann man mit `quantile()` beliebige Quantile bestimmen:
 
 ```{r}
 quantile(erstis$lz13, type = 5, na.rm = TRUE)
 ```
   - standardmäßig teilt die `quantile()`-Funktion die Daten in vier Abschnitte ein, also in sogenannte Quartile
-  - Interpretation des 75 % Quantils: mindestens 75 % der Studierenden haben einen Wert von 6 oder kleiner angekreuzt
+  - Interpretation des 75 % Quantils (3. Quartils): mindestens 75 % der Studierenden haben einen Wert von 6 oder kleiner angekreuzt
   - das `type` Argument legt fest, welche Formel zur Berechnung der Quantile genutzt wird
     + `type = 5` entspricht der Formel aus der Vorlesung
     
-Der empirische Interquartilsbereich, also das Intervall, das die Werte zwischen dem ersten und dritten Quartil beinhaltet, kann man direkt aus dem Output ablesen. Er gibt Aufschluss darüber, wie die Daten gestreut sind.
+Mit Quartilen lässt sich außerdem der empirische Interquartilsbereich, ein Streuungsmaß, bestimmen. Der Interquartilsbereich gibt die Breite des Intervalls der mittleren 50 % der Personen im Datensatz an. In unserem Beispiel erhalten wir einen empirischen Interquartilsbereich von $x_{0.75}-x_{0.25}=6-4=2$
 
 Mit dem `probs` Argument lassen sich die Quantile manuell festlegen:
 ```{r}
@@ -194,7 +189,7 @@ In R lassen sich Grafiken mit einer Palette von Argumenten anpassen.
 Ein Beispiel:
 ```{r}
 barplot(kumuliert,
-        main = "Kumulierte Häufigkeiten für lz15",
+        main = "Kumulierte Häufigkeiten für lz13",
         xlab = "Kategorien",
         ylab = "kumulierte prozent. Häufigkeiten",
         col = "blue")
@@ -238,7 +233,10 @@ Alternativ kann man den `range()`-Befehl nutzen:
 range(erstis$lz13, na.rm = TRUE)
 ```
 
-## Streuungsmaße
+## Streuungsmaße (oder Dispersionsmaße)
+
+Kennwerte der zentralen Tendenz können für verschiedene Variablen ähnliche oder sogar gleiche Werte annehmen. Aber heißt das auch, dass die *Verteilungen* dieser Variablen ähnlich oder gleich sein müssen? Beispielsweise wäre es möglich, dass die Variablen "Wohnort vor 12 Monaten" und "Wohnort jetzt" denselben Modus haben. Das ist aber kein Indikator dafür, dass die Ausprägungen der Merkmalsträger sich bei beiden Variablen gleich über die Kategorien verteilen.
+Das gilt natürlich auch für alle anderen Lagemaße! Nur weil die Verteilungen von zwei Variablen den gleichen Median oder arithmetischen Mittelwert aufweisen, heißt das nicht, dass die Verteilungen identisch aussehen. Streuungsmaße geben Aufschluss darüber, wie die Daten um den Median oder arithmetischen Mittelwert streuen, d. h., wie sich die Beobachtungen über die verschiedenen Kategorien verteilen / wie große die Unterschiedlichkeit der Ausprägungen über die Merkmalsträger ist.
 
 ### Varianz & Standardabweichung
 

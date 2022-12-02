@@ -58,7 +58,7 @@ aktualisieren Sie es, sodass Sie die neuste Version haben.
 
 ## Zusatzaufgabe: Eigene Funktionen in R (für Fortgeschrittene)
 
-*(Diese Aufgabe ist optional und nicht prüfungsrelevant)*
+*(Diese Aufgabe ist nicht prüfungsrelevant)*
 
 Sie können in R auch eigene Funktionen schreiben (Funktionen wie beispielweise `summary()`). 
 

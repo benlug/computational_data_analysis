@@ -6,6 +6,7 @@ output:
         - _tex/preamble.tex
 header-includes:
   - \chead{Übungsblatt 3 - Datenmanagement}
+urlcolor: blue
 ---
 
 ```{r, echo=F}
@@ -76,20 +77,58 @@ wachen Stimmung darstellt. Nennen Sie diese Variable `wm` (wach-müde) und mitte
 dazu alle Items der Skala. Zu dieser Skala gehören das zweite, fünfte, siebte und zehnte Stimmungsitem. Wählen Sie einen liberalen Umgang mit fehlenden Werten (Berechnung des Skalenwertes auch bei Personen mit fehlenden Werten).
 **Achtung**: Vergessen Sie nicht, die in Aufgabe 2 erstellten umgepolten Items zu verwenden!
 
+## Zusatzaufgabe 1: Logische Bedingungen - `if` condition
 
+*(Diese Aufgabe ist nicht prüfungsrelevant)*
 
+Beim Datenmanagement ist es nicht selten der Fall, dass man einen Befehl oder eine Funktion nur unter einer bestimmten Bedingung ausführen möchte. Das könnte die Erstellung eines Teildatensatzes oder die Überprüfung der Gültigkeit von Werten einer Variable sein. Mit Hilfe von sogenannten `wenn`-Bedingungen (`if` conditions) lassen sich solche Probleme lösen.
 
+In R kann man eine `wenn`-Bedingung mit der `if ()`-Funktion erzeugen. Die Bedingung wird hier wie bei einer regulären Funktion in die Klammern geschrieben. Allerdings mit einem Leerzeichen zwischen `if` und den Klammern `()`!
+Die Bedingung kann `TRUE` (wahr) oder `FALSE` (falsch) sein. Im Falle, dass die Bedingung falsch ist, passiert nichts, da R die Konsequenz der `if`-Bedingung nur ausführt, wenn diese auch wahr ist. Im Falle einer wahren Bedingung führt R die Konsequenz aus, welche in geschwungenen Klammern steht.
 
+```{r, eval=FALSE}
+if (BEDINGUNG) { # in runden Klammern; kann TRUE oder FALSE sein kann
+  KONSEQUENZ     # in geschwungenen Klammern 
+}
+```
 
+Beispiel: (Falls Ihnen nicht klar ist, wie das Ergebnis zustande kommt, kopieren Sie den Code in Ihr eigenes Skript und führen Sie diesen selbst Schritt für Schritt in RStudio aus)
+```{r}
+x <- 5
+z <- 10
+if (x == 100) {
+  z <- z*x
+}
+z
+```
 
+(i) Schreiben Sie eine `if` condition, welche überprüft, ob eine beliebige Zahl größer als 4 ist. Ist die Zahl größer als 4, soll folgende Nachricht in der Konsole ausgegeben werden: Die Zahl ist größer als 4! 
+Nutzen Sie dafür die Funktion `print()`. (`?print` könnte hilfreich sein). Überprüfen Sie die Richtigkeit Ihres Codes, indem Sie nacheinander $-5, 3.99, 100$ in die Bedingung einsetzen.
+(ii) Schreiben Sie eine `if` condition, welche überprüft, ob eine beliebige Zahl gerade ist. Lassen Sie sich eine geeignete Nachricht in der Konsole ausgeben, falls die Zahl gerade sein sollte.
+Überprüfen Sie die Richtigkeit Ihres Codes, indem Sie nacheinander $-2, 6, \pi$ in die Bedinung einsetzen.  
+**Tipp**: Die Modulooperation `%%` könnte hier hilfreich sein. Mit der Modulooperation berechnet man den Rest einer Division zweier Zahlen. (siehe die Beispiele im Modulokapitel auf Wikipedia: [Wikipedia - Modulo](https://de.wikipedia.org/wiki/Division_mit_Rest#Modulo))
 
+Beispiel:
+```{r}
+9 %% 3
+10 %% 3
+```
 
+## Zusatzaufgabe 2: Logische Bedingungen - `if-else` condition
 
+*(Diese Aufgabe ist nicht prüfungsrelevant)*
 
+Mit der einfachen `wenn`-Bedingung wird ein Befehl oder ein ganzer Codeblock nur dann ausgeführt, wenn die Bedingung zutrifft. Falls auch Code ausgeführt werden soll, wenn die Bedingung nicht zutrifft, muss die `wenn-dann`-Bedingung (`if-else` condition) verwendet werden.
 
+```{r, eval=FALSE}
+if (BEDINGUNG) { 
+  KONSEQUENZ # wenn BEDINGUNG wahr
+} else {
+  KONSEQUENZ # wenn BEDINGUNG falsch
+}
+```
 
-
-
+Ergänzen Sie die in Zusatzaufgabe 1 erstellten `if` conditions, um ein `else`. Überlegen Sie sich eine passende Nachricht (via `print()`) für die Ausgabe in der Konsole, wenn die Konsequenz der `else`-Bedingung zutrifft. 
 
 
 

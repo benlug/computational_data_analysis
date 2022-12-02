@@ -10,7 +10,7 @@ header-includes:
 ---
 
 ```{r, echo=FALSE}
-setwd("C:/Users/Ben/OneDrive/PhD/teaching/computational_data_analysis/Skript")
+setwd(this.path::here())
 ```
 
 ```{r, echo=F}

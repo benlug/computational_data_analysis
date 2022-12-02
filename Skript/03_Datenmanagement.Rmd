@@ -35,7 +35,7 @@ Eine *mächtigere* Datenstruktur ist der sogenannte **Data Frame**. Im Gegensatz
 
 Beispiel:
 ```{r echo=F}
-setwd("C:/Users/Ben/OneDrive/PhD/teaching/computational_data_analysis/Skript")  # set wd in source file location
+setwd(this.path::here())  # set wd in source file location
 ```
 
 ```{r}
