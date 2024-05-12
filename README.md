@@ -6,7 +6,7 @@ The scripts provide an overview of statistical analysis using R in the social sc
 
 ## Teaching
 
-## Updating the Documents for a New Semester
+### Updating the Documents for a New Semester
 
 1. **Footer Updates**:
    - The script pages have a footer indicating the semester year and the lecturer(s)' name(s). This can be changed in the `header.yaml` file within the script folder.
@@ -14,6 +14,6 @@ The scripts provide an overview of statistical analysis using R in the social sc
 2. **Directory Paths**:
    - Most scripts and solution files have predefined working directories. These paths may need to be updated to reflect the current environment setup.
 
-## Makefiles
+### Makefiles
 
 The script, exercise and solution folder contain a makefile for quick and easy rendering of all rmds within their respective folders.
