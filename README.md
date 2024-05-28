@@ -1,6 +1,6 @@
 # Computational Data Analysis
  
-This repository contains the course materials for the "Computational Data Analysis I" course, tailored for first-year students interested in statistical analysis using R in the social sciences.
+This repository contains the course materials for a "Computational Data Analysis I" course, tailored for first-year students interested in statistical analysis using R in the social sciences.
 
 The scripts provide an overview of statistical analysis using R, covering data import, management, univariate and bivariate statistics, and regression analysis. The course details methods for summarizing, visualizing, and analyzing data through linear models and explores both continuous and discrete probability distributions, emphasizing practical applications in statistics.
 
